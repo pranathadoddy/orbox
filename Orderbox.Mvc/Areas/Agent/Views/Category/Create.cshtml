@@ -1,0 +1,66 @@
+﻿@using Framework.Application.Presentation
+@using Framework.Core.Resources
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@model Orderbox.Mvc.Areas.Agent.Models.Category.CreateModel
+
+@{
+    ViewData["Title"] = "Category";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="page-pretitle">
+                        Edit Merchant
+                    </div>
+                    <h2 class="page-title">
+                        @Model.MerchantName
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-2 mb-5">
+                @{ await Html.RenderPartialAsync("../_SideNavigation", Model.SideNavigation); }
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-10">
+                @using (Html.BeginForm("Create", "Category", new { area = "Agent", tenantId = string.Empty }, FormMethod.Post))
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Kategori</h3>
+                        </div>
+                        <div class="card-body">
+                            @Html.HiddenFor(model => model.TenantId)
+                            @Html.TextEditorFor(model => model.Name, "mb-2")
+                            @Html.MultilineTextEditorFor(model => model.Description, "mb-2")
+                        </div>
+                        <div class="card-footer">
+                            @Html.ButtonWithLabel(
+                                string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_Save),
+                                buttonType: PresentationConstant.ButtonType.Submit,
+                                id: "btn-save",
+                                cssClass: "btn-primary")
+                            @Html.LinkButtonWithLabel(
+                                string.Format("<i class='fa fa-remove mr-1'></i> {0}", GeneralResource.General_Cancel),
+                                id: "link-cancel",
+                                cssClass: "btn-link",
+                                href: $"/Agent/Category/{Model.SideNavigation.MerchantId}")
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AgentCategoryCreate.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  orderbox.mvc:
+    image: ${DOCKER_REGISTRY-}orderboxmvc
+    build:
+      context: .
+      dockerfile: Orderbox.Mvc/Dockerfile

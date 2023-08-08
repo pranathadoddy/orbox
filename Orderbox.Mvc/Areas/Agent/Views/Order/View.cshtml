@@ -1,0 +1,236 @@
+﻿@using System.Globalization
+@using Microsoft.Extensions.Configuration
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Core
+@using Orderbox.Core.SystemCode
+@using Orderbox.Core.Resources.Common
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@{
+    ViewData["Title"] = "Website Management";
+    Layout = $"{this.User.Identity.GetRole()}Layout/_Layout";
+    var linkText = $"{Model.TenantShortName}{Configuration.GetSection("Application")["DomainPostfix"]}";
+    var linkHref = string.Format(Configuration.GetSection("Application")["UrlFormat"], linkText);
+}
+
+@inject IConfiguration Configuration
+@model Orderbox.Mvc.Areas.Agent.Models.Order.ViewModel
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="page-pretitle">
+                        Edit Merchant
+                    </div>
+                    <h2 class="page-title">
+                        @Model.MerchantName
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-2 mb-5">
+                @{
+                    await Html.RenderPartialAsync("../_SideNavigation", Model.SideNavigation);
+                }
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-10">
+                <div class="card card-profile">
+                    <div class="card-body text-center">
+                        <h2 class="mb-3">@Model.Order.BuyerName</h2>
+                        <p class="m-0">@Model.Order.OrderNumber</p>
+                        <p class="m-0">@Model.Order.Description</p>
+                        <p class="mb-4">@Model.Order.BuyerPhoneNumber</p>
+                        @{
+                            var phoneLink = string.Format("tel:{0}", Model.Order.BuyerPhoneNumber);
+
+                            var waPhoneNumber = Model.Order.BuyerPhoneNumber;
+                            if (waPhoneNumber[0] == '0')
+                            {
+                                waPhoneNumber = "62" + waPhoneNumber.Remove(0, 1);
+                            }
+
+                            var waLink = string.Format("https://wa.me/{0}", waPhoneNumber);
+                        }
+                        <a class="btn btn-sm btn-outline-primary" href="@phoneLink"><i class="fa fa-phone"></i><span class="ml-2">Hubungi</span></a>
+                        <a class="btn btn-sm btn-outline-primary" href="@waLink" target="_blank"><i class="fa fa-whatsapp"></i><span class="ml-2">Whatsapp</span></a>
+                    </div>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.Order.PaymentOptionCode))
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Pembayaran</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <h2>@Model.Order.PaymentProviderName</h2>
+                            @if (Model.Order.PaymentOptionCode != CoreConstant.PaymentOption.PaymentGateway)
+                            {
+                                if (Model.Order.PaymentOptionCode == CoreConstant.PaymentOption.Cod)
+                                {
+                                    <p class="mb-1">@Model.Order.PaymentDescription</p>
+                                }
+                                else
+                                {
+                                    <p class="mb-1">@Model.Order.PaymentAccountName<br />@Model.Order.PaymentAccountNumber</p>
+                                }
+                            }
+
+                            @{
+                                var badge = "badge-primary";
+                            }
+                            @if (Model.Order.PaymentStatus == CoreConstant.PaymentStatus.Cancelled || Model.Order.PaymentStatus == CoreConstant.PaymentStatus.Expired)
+                            {
+                                badge = "badge-secondary text-dark";
+                            }
+                            else if (Model.Order.PaymentStatus == CoreConstant.PaymentStatus.Paid)
+                            {
+                                badge = "badge-green";
+                            }
+                            <span class="badge @badge" style="font-size: 1rem !important;">@PaymentStatusCode.Item.GetDescription(Model.Order.PaymentStatus)</span>
+                            
+                            @if (!string.IsNullOrEmpty(Model.Order.PaymentProof))
+                            {
+                                <img class="d-block" src="@Model.PaymentProofUrl" style="width:300px;margin: 1rem auto" />
+                                @if (Model.Order.PaymentStatus == CoreConstant.PaymentStatus.Ready)
+                                {
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <a 
+                                                class="btn btn-warning w-100 btn-reset" 
+                                                href="/Agent/Order/ResetPaymentProof/@Model.Order.Id"
+                                                data-tenant-id="@Model.TenantId"
+                                                data-title="Reset"
+                                                data-confirmation-message="@OrderResource.PaymentProof_ResetConfirmationMessage"
+                                            >
+                                                Reset
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <a 
+                                                class="btn btn-danger w-100 btn-reject" 
+                                                href="/Agent/Order/RejectPaymentProof/@Model.Order.Id"
+                                                data-tenant-id="@Model.TenantId"
+                                                data-title="Reject"
+                                                data-confirmation-message="@OrderResource.PaymentProof_RejectConfirmationMessage"
+                                            >
+                                                Reject
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <a 
+                                                class="btn btn-primary w-100 btn-accept" 
+                                                href="/Agent/Order/AcceptPaymentProof/@Model.Order.Id"
+                                                data-tenant-id="@Model.TenantId"
+                                                data-title="Accept"
+                                                data-confirmation-message="@OrderResource.PaymentProof_AcceptConfirmationMessage"
+                                            >
+                                                Accept
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Order Detail</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach (var item in Model.Order.OrderItems)
+                            {
+                                var discountedPrice = item.UnitPrice - (item.Discount * item.UnitPrice / 100);
+                                <div class="col-md-4 p-1">
+                                    <div class="border border-radius">
+                                        <table class="w-100">
+                                            <tr>
+                                                <td class="w-25p p-2 position-relative">
+                                                    <img src="@(item.ExtProductImageUrl)" />
+                                                    @if (item.Discount > 0)
+                                                    {
+                                                        <span class="item-discount">-@item.Discount.ToString("N0")%</span>
+                                                    }
+                                                </td>
+                                                <td class="p-1">
+                                                    @item.ProductName
+                                                    <div class="text-orange">
+                                                        <small class="text-small">@Model.Currency</small>
+                                                        <text>&nbsp;</text>
+                                                        @if (item.Discount > 0)
+                                                        {
+                                                            <span class="text-linethrough">
+                                                                @item.UnitPrice.ToString("N0", new CultureInfo("id-ID"))
+                                                            </span>
+                                                            <text>&nbsp;</text>
+
+                                                        }
+                                                        @discountedPrice.ToString("N0", new CultureInfo("id-ID")) x @item.Quantity @item.ProductUnit
+                                                    </div>
+                                                    @if (!string.IsNullOrEmpty(item.Note))
+                                                    {
+                                                        <div class="note">
+                                                            <small class="text-muted">Catatan dari pelanggan:</small><br />
+                                                            <strong>@item.Note</strong>
+                                                        </div>
+                                                    }
+                                                </td>
+                                                <td class="w-25p text-right p-2">
+                                                    <strong>
+                                                        <small class="text-small">@Model.Currency</small>
+                                                        @((discountedPrice * item.Quantity).ToString("N0", new CultureInfo("id-ID")))
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-footer text-center text-white font-bigger bg-orange">
+                        <h3><small>@Model.Currency</small> @string.Format("{0:N0}", Model.Order.OrderItems.Sum(i => i.ExtTotalPrice))</h3>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Status Pesanan</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="updateStatusForm" data-url="/Agent/Order/UpdateStatus">
+                            @Html.HiddenFor(model => model.Id)
+                            @Html.HiddenFor(model => model.TenantId)
+                            @Html.SelectGroupFor(model => model.Status, Model.StatusRadioItems)
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    @{
+                        var invoiceLink = string.Format("{0}/order/invoice/t{1}o{2}", linkHref, Model.Order.TenantId, Model.Order.Id);
+                        var whatsappInvoiceText = string.Format(OrderResource.SendInvoiceText, invoiceLink);
+                        var whatsappLink = waLink + "?text=" + System.Web.HttpUtility.UrlEncode(whatsappInvoiceText);
+                    }
+
+                    <div class="col-6">
+                        <a class="btn btn-primary w-100" href="@invoiceLink" target="_blank">Cetak Invoice</a>
+                    </div>
+                    <div class="col-6">
+                        <a class="btn btn-primary w-100" href="@whatsappLink" target="_blank">Kirim Invoice</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+<script defer type="text/javascript">
+    window.addEventListener('DOMContentLoaded', function () {
+        var page = new AgentOrderView.default($('[page]'));
+        page.register();
+    });
+</script>
+}

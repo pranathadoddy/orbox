@@ -1,0 +1,8 @@
+﻿.tabbar--material__border {
+    background-color: #00aca1;
+}
+
+.active .ons-icon,
+.active .tabbar__icon + .tabbar__label {
+    color: #00aca1;
+}

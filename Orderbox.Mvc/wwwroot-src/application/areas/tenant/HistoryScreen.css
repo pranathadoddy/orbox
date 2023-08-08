@@ -1,0 +1,12 @@
+﻿.splitter-header {
+    padding: 15px;
+    padding-bottom: 0;
+}
+
+    .splitter-header h2 {
+        color: #00aca1;
+    }
+
+.list-item small {
+    display: block;
+}

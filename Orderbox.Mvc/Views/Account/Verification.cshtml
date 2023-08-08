@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "_PlainLayout";
+}
+
+@using Framework.Core.Resources
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@model Orderbox.Mvc.Models.Account.VerificationModel
+
+<div id="page" class="container">
+    <div class="row">
+        <div class="col col-login mx-auto">
+            <div class="text-center my-5 login-logo">
+                <img src="https://cdn.orbox.id/obox/assets/img/logo.png" class="py-2" />
+                Orderbox
+            </div>
+            @using (Html.BeginForm("Verification", "Account", FormMethod.Post, new
+            {
+                @class = "card bg-white-transparent"
+            }))
+            {
+                <div class="card-body p-3 p-md-6">
+                    <div class="card-title">Email Verification</div>
+                    @Html.SimpleDivPlaceholder("errorpane")
+                    @Html.HiddenFor(model => model.Token)
+                        @Html.TextEditorFor(model => model.Code)
+                    @Html.FormFooterButton(GeneralResource.General_Confirm,
+                        buttonType: PresentationConstant.ButtonType.Submit,
+                        id: "btn-validate",
+                        cssClass: "btn-primary btn-block")
+                    @Html.SimpleDivPlaceholder("spinnerpane")
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AccountVerification.default($('#page'));
+            page.register();
+        });
+    </script>
+}

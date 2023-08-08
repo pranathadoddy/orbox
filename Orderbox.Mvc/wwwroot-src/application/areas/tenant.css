@@ -1,0 +1,53 @@
+﻿@media only screen and (min-width: 576px) {
+    body {
+        width: 576px;
+        margin: 0 auto;
+        border-left: 1px solid #ABABAB;
+        border-right: 1px solid #ABABAB;
+    }
+}
+
+* {
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: .5px;
+}
+
+.text-input--material__label--active {
+    color: #00aca1;
+}
+
+.badge {
+    font-size: 0.7333333em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    background: #f1f3f8;
+    display: inline-block;
+    padding: 6px 4px 3px;
+    line-height: 1;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 3px;
+}
+
+.badge-primary {
+    background-color: #2bcbba;
+}
+
+.badge-orange {
+    background-color: #F37021;
+}
+
+.badge-yellow {
+    background-color: #f1c40f;
+}
+
+.badge-green {
+    background-color: #5eba00;
+}
+
+.badge-red {
+    background-color: #cd201f;
+}

@@ -1,0 +1,31 @@
+﻿@model Orderbox.Mvc.Areas.Agent.Models.SideNavigationModel
+
+<div class="list-group list-group-flush">
+    <a href="/Agent/Order/Index/@Model.MerchantId" class="list-group-item list-group-item-action @(Model.ActivePage == "Order" ? "active" : "")">
+        Order
+    </a>
+    <a href="/Agent/Category/Index/@Model.MerchantId" class="list-group-item list-group-item-action @(Model.ActivePage == "Category" ? "active" : "")">
+        Kategori
+    </a>
+    <a href="/Agent/Voucher/Index/@Model.MerchantId" class="list-group-item list-group-item-action @(Model.ActivePage == "Voucher" ? "active" : "")">
+        Voucher
+    </a>
+    <a href="/Agent/Product/Index/@Model.MerchantId" class="list-group-item list-group-item-action @(Model.ActivePage == "Product" ? "active" : "")">
+        Produk
+    </a>
+    <a href="/Agent/Report/Index/@Model.MerchantId" class="list-group-item list-group-item-action @(Model.ActivePage == "Report" ? "active" : "")">
+        Laporan
+    </a>
+    <a href="/Agent/Store/Index/@Model.MerchantId" class="list-group-item list-group-item-action @(Model.ActivePage == "Store" ? "active" : "")">
+        Store
+    </a>
+    <a href="/Agent/Profile/Index/@Model.MerchantId" class="list-group-item list-group-item-action @(Model.ActivePage == "Profile" ? "active" : "")">
+        Pengaturan Profile
+    </a>
+    <a href="/Agent/CheckoutSetting/Index/@Model.MerchantId" class="list-group-item list-group-item-action @(Model.ActivePage == "CheckoutSetting" ? "active" : "")">
+        Pengaturan Checkout
+    </a>
+    <a href="/Agent/Merchant/Edit/@Model.MerchantId" class="list-group-item list-group-item-action @(Model.ActivePage == "Edit" ? "active" : "")">
+        Pengaturan Umum
+    </a>
+</div>

@@ -1,0 +1,15 @@
+﻿@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Core.Resources.Common
+@model Orderbox.Mvc.Areas.User.Models.Report.IndexModel
+
+<div class="col-sm-12 col-lg-3">
+    <div class="card">
+        <div class="card-body p-3 text-center"
+             data-url="/User/Report/GetTotalRevenueSummary"
+             summary>
+            <div class="display-4 m-0" summary-container></div>
+            @Html.SimpleDivPlaceholder("spinnerpane")
+            <div class="text-muted mt-1 text-uppercase">@ReportResource.Revenue (@Model.TenantCurrency)</div>
+        </div>
+    </div>
+</div>

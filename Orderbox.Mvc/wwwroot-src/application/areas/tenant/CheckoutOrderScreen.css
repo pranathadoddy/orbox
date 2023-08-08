@@ -1,0 +1,17 @@
+﻿.back-button--material__icon {
+    fill: #00aca1;
+}
+
+.checkout.product {
+    padding: 0;
+}
+
+.content {
+    margin-bottom: 10px; 
+    border-bottom: 1px solid #DEDEDE;
+    color: #000000;
+}
+
+.content p {
+    font-size: 12pt;
+}

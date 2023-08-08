@@ -1,0 +1,65 @@
+﻿.table-card table {
+    margin-bottom: 0;
+}
+
+.table-card thead {
+    display: none;
+}
+
+.table-card tbody {
+    display: block;
+    padding: 20px;
+    background-color: transparent;
+    border-top: 1px solid rgba(0,40,100,.12);
+    border-bottom: 1px solid rgba(0,40,100,.12);
+}
+
+.table-card tr {
+    display: inline-block;
+    width: 25%;
+}
+
+    .table-card tr:hover {
+        background-color: transparent;
+    }
+
+.table-card td {
+    display: block;
+    width: 100%;
+    border-bottom: none !important;
+    padding: 8px !important;
+}
+
+    .table-card td .card img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+@media (max-width: 1279px) {
+    .table-card tr {
+        width: 33.3%;
+    }
+}
+
+@media (max-width: 991px) {
+    .table-card tr {
+        width: 50%;
+    }
+}
+
+@media (max-width: 575px) {
+    .table-card table[grid] {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .table-card tbody {
+        padding: 5px;
+    }
+
+    .table-card tr {
+        width: 100%;
+    }
+}

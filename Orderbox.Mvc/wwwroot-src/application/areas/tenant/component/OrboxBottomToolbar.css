@@ -1,0 +1,31 @@
+﻿.container-price-cart {
+    background: #ffffff;
+    height: 100px;
+    width: 100%;
+    border-top: 1px solid #DEDEDE;
+    border-bottom: 1px solid #DEDEDE;
+}
+
+.cart-container-price {
+    margin-top: 10px;
+}
+
+.price-left {
+    float: left;
+    width: 60px;
+    margin-left: 20px;
+}
+
+.price-right {
+    text-align: right;
+    margin-right: 20px;
+    font-weight: bold;
+}
+
+.cart-container-btn {
+    margin: 10px 20px 20px 20px;
+}
+
+.ordered-product.product {
+    margin-bottom: 50px;
+}

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Configurations>Debug;Release;Staging</Configurations>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Framework.Dto\Framework.Dto.csproj" />
+		<ProjectReference Include="..\Framework.ServiceContract\Framework.ServiceContract.csproj" />
+	</ItemGroup>
+
+</Project>

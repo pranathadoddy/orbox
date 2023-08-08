@@ -1,0 +1,70 @@
+﻿@using Orderbox.Core.Resources.Common
+@using Orderbox.Core.SystemCode
+@model Orderbox.Mvc.Areas.Agent.Models.Order.IndexModel
+@{
+    ViewData["Title"] = "Order";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="page-pretitle">
+                        Edit Merchant
+                    </div>
+                    <h2 class="page-title">
+                        @Model.MerchantName
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-2 mb-5">
+                @{ await Html.RenderPartialAsync("../_SideNavigation", Model.SideNavigation); }
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-10">
+                <div class="row row-deck">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Order</h3>
+                            </div>
+                            @{
+                                var statusList = @OrderStatusCode.Item.ToDictionary();
+                                var entries = statusList.Select(d => "{\"id\": \"" + d.Key + "\", \"text\": \"" + string.Join(",", d.Value) + "\"}");
+                                var statusListJson = "[{\"id\":\"\", \"text\": \"\"}," + string.Join(",", entries) + "]";
+
+                            }
+                            <table grid
+                                class="table table-striped table-hover bootgrid-table"
+                                data-url="/Agent/Order/PagedSearchGridJson"
+                                data-filters="tenantId=@Model.SideNavigation.MerchantId"
+                                data-status-list="@statusListJson"
+                                data-edit-url="/Agent/Order/View/@Model.SideNavigation.MerchantId"
+                                data-tenant-id=@Model.SideNavigation.MerchantId
+                                id="order"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th data-column-id="id" data-formatter="Edit" data-header-css-class="w-10-custom">@OrderResource.OrderNumber</th>
+                                        <th data-column-id="buyerName" data-formatter="BuyerName">@OrderResource.BuyerName</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AgentOrderIndex.default($('[page]'), "@Model.Status");
+            page.register();
+        });
+    </script>
+}

@@ -1,0 +1,18 @@
+﻿@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Core.Resources.Common
+@model Orderbox.Mvc.Areas.User.Models.Report.IndexModel
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header text-uppercase">
+            <h3 class="card-title">@ReportResource.DailyRevenueChart</h3>
+        </div>
+        <div class="card-body"
+             data-url="/User/Report/GetDailyRevenueChart"
+             data-label="Total Omzet"
+             bar-chart>
+            @Html.SimpleDivPlaceholder("spinnerpane")
+            @Html.SimpleDivPlaceholder("chart-container")
+        </div>
+    </div>
+</div>

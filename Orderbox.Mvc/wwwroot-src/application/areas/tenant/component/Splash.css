@@ -1,0 +1,22 @@
+﻿.splash {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+
+    .splash span.appsname {
+        display: block;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: .5em;
+        color: #00aca1;
+        margin: 15px auto;
+    }
+
+    .splash small {
+        color: #888888;
+    }

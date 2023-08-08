@@ -1,0 +1,85 @@
+﻿.table-responsive > .table-bordered, .text-wrap .table-responsive > table {
+    border: 1px solid #2bcbba !important;
+}
+.bootgrid-table thead th {
+    background: #2bcbba !important;
+    padding: 14px !important;
+}
+.bootgrid-table thead th:hover {
+    background: #2b699b !important;
+    transition: all ease 0.2s;
+}
+.bootgrid-table thead th:hover a,
+.bootgrid-table thead th:hover .icon {
+    color: #fff !important;
+}
+.bootgrid-table th:active {
+    background: #2b699b !important;
+    transition: all ease 0.2s;
+}
+.bootgrid-table th:active a,
+.bootgrid-table th:active .icon {
+    color: #fff !important;
+}
+.bootgrid-table th > .column-header-anchor > .icon {
+    color: #fff;
+}
+.bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus,
+.bootgrid-footer .infoBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover,
+.bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:focus,
+.bootgrid-header .actionBar .btn-group > .btn-group .dropdown-menu .dropdown-item:hover {
+    background-color: #2b699b !important;
+    color: white !important;
+}
+.bootgrid-table th > .column-header-anchor > .text {
+    color: #ffffff;
+}
+.bootgrid-table td {
+    padding: 8px 14px !important;
+}
+.bootstrap .table > thead > tr > th,
+.bootstrap .table > tbody > tr > th,
+.bootstrap .table > tfoot > tr > th,
+.bootstrap .table > thead > tr > td,
+.bootstrap .table > tbody > tr > td,
+.bootstrap .table > tfoot > tr > td {
+    border-top: 0;
+    border-bottom: 1px solid #ddd;
+}
+.bootgrid-header .btn .caret {
+    display: none;
+}
+
+.bootgrid-header .btn .icon {
+    margin: 0;
+    font-size: 1rem;
+    vertical-align: unset;
+}
+
+.bootgrid-footer .page-link {
+    border: 1px solid #e9ecf1;
+    margin-left: -1px !important;
+    border-radius: 0;
+    padding: .5rem .75rem;
+}
+
+    @media (max-width: 768px) {
+        .actionBar .search {
+            width: 100%;
+        }
+
+        .actionBar .actions {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .bootgrid-footer .infoBar {
+            margin-top: 10px;
+        }
+
+        .bootgrid-footer > .row > .col-sm-6 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }

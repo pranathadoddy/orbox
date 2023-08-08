@@ -1,0 +1,58 @@
+﻿@using Framework.Core.Resources
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@using Microsoft.Extensions.Configuration
+@{
+    ViewData["Title"] = "Deals Agency";
+    Layout = $"{this.User.Identity.GetRole()}Layout/_Layout";
+}
+@inject IConfiguration Configuration
+@model Orderbox.Mvc.Areas.Administrator.Models.Agent.ViewModel
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        View
+                    </div>
+                    <h2 class="page-title">
+                        Deals Agency
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                @using (Html.BeginForm("Edit", "Agent", FormMethod.Post, new
+                {
+                    area = "Administrator"
+                }))
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Deals Agency Detail</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    @Html.TextEditorFor(model => model.Email, "mb-2")
+                                    @Html.DropDownFor(model => model.Privilege, Model.Privileges)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @Html.LinkButtonWithLabel(
+                                string.Format("<i class='fa fa-remove mr-1'></i> {0}", GeneralResource.General_Cancel),
+                                id: "link-cancel",
+                                cssClass: "btn-link",
+                                href: $"/Administrator/Agency/Edit/{Model.AgencyId}")
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </main>
+</div>

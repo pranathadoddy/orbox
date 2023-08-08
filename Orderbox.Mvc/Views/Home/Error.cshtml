@@ -1,0 +1,33 @@
+﻿@{ 
+    Layout = "_PlainLayout";
+}
+@model int
+
+@if (Model == 404)
+{
+    <div class="container-tight py-6">
+        <div class="empty">
+            <div class="empty-icon">
+                <div class="display-4">404</div>
+            </div>
+            <p class="empty-title h3">Error</p>
+            <p class="empty-subtitle text-muted">
+                We are sorry but the page you are looking for was not found
+            </p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container-tight py-6">
+        <div class="empty">
+            <div class="empty-icon">
+                <div class="display-4">@Model</div>
+            </div>
+            <p class="empty-title h3">Error</p>
+            <p class="empty-subtitle text-muted">
+                If you see this error, please let us know how did you get here.
+            </p>
+        </div>
+    </div>
+}

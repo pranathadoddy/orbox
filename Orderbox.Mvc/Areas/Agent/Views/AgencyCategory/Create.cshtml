@@ -1,0 +1,80 @@
+﻿@using Framework.Application.Presentation
+@using Framework.Core.Resources
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@model Orderbox.Mvc.Areas.Agent.Models.AgencyCategory.CreateModel
+
+@{
+    ViewData["Title"] = "Agency Category";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="page-pretitle">
+                        Create
+                    </div>
+                    <h2 class="page-title">
+                        Agency Category
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-deck">
+            <div class="col-12">
+                <div class="card">
+                    @using (Html.BeginForm("Create", "AgencyCategory", FormMethod.Post))
+                    {
+                        <div class="card-body">
+                            @Html.HiddenFor(model => model.Base64File)
+                            @Html.HiddenFor(model => model.FileName)
+                            @Html.TextEditorFor(model => model.Name, "mb-2")
+                            @Html.MultilineTextEditorFor(model => model.Description, "mb-2")
+                            @Html.SwitcherFor(model=> model.IsMainCategory, additionalClass: "mb-2")
+                            <div class="form-group form-group-upload">
+                                <div class="row logo-wrapper m-0 mb-4">
+                                    <div class="col-sm-12 col-lg-12 text-center">
+                                        <span class="agency-icon"></span>
+                                    </div>
+                                </div>
+                                <div class="form-label">Upload Icon</div>
+                                <div class="form-file">
+                                    <input type="file" class="form-file-input" id="Icon" name="Icon">
+                                    <label class="form-file-label" for="customFile">
+                                        <span class="form-file-button">Pilih File</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @Html.ButtonWithLabel(
+                        string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_Save),
+                        buttonType: PresentationConstant.ButtonType.Submit,
+                        id: "btn-save",
+                        cssClass: "btn-primary")
+                            @Html.LinkButtonWithLabel(
+                        string.Format("<i class='fa fa-remove mr-1'></i> {0}", GeneralResource.General_Cancel),
+                        id: "link-cancel",
+                        cssClass: "btn-link",
+                        href: $"/Agent/AgencyCategory")
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@await Html.PartialAsync("_IconModal")
+
+@section scripts {
+<script defer type="text/javascript">
+    window.addEventListener('DOMContentLoaded', function () {
+        var page = new AgentAgencyCategoryCreate.default($('[page]'));
+        page.register();
+    });
+</script>
+}
+

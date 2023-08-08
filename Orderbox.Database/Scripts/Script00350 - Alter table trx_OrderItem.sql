@@ -1,0 +1,1 @@
+﻿ALTER TABLE `trx_OrderItem` ADD COLUMN `AvailableRedeemStores` TEXT NULL AFTER `Note`;

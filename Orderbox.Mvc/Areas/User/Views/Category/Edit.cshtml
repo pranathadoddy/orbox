@@ -1,0 +1,73 @@
+﻿@using Framework.Core.Resources
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@using Orderbox.Core.Resources.Common
+@using Microsoft.Extensions.Configuration
+@{
+    ViewData["Title"] = "Website Management";
+    Layout = $"{this.User.Identity.GetRole()}Layout/_Layout";
+}
+@inject IConfiguration Configuration
+@model Orderbox.Mvc.Areas.User.Models.Category.EditModel
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        Edit
+                    </div>
+                    <h2 class="page-title">
+                        Kategori
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+
+                @using (Html.BeginForm("Edit", "Category", FormMethod.Post))
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Category Detail</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    @Html.HiddenFor(model => model.Id)
+                                    @Html.TextEditorFor(model => model.Name, "mb-2")
+                                    @Html.MultilineTextEditorFor(model => model.Description, "mb-2")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @Html.ButtonWithLabel(
+                                string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_Update),
+                                buttonType: PresentationConstant.ButtonType.Submit,
+                                id: "btn-save",
+                                cssClass: "btn-primary")
+                            @Html.LinkButtonWithLabel(
+                                string.Format("<i class='fa fa-remove mr-1'></i> {0}", GeneralResource.General_Cancel),
+                                id: "link-cancel",
+                                cssClass: "btn-link",
+                                href: "/User/Category/Index")
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new CategoryEdit.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

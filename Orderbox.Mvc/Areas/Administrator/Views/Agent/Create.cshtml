@@ -1,0 +1,69 @@
+﻿@using Framework.Core.Resources
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@using Microsoft.Extensions.Configuration
+@using Orderbox.Core.Resources.Common
+
+@{
+    ViewData["Title"] = "Agent";
+    Layout = $"{this.User.Identity.GetRole()}Layout/_Layout";
+}
+@inject IConfiguration Configuration
+@model Orderbox.Mvc.Areas.Administrator.Models.Agent.CreateModel
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        Create
+                    </div>
+                    <h2 class="page-title">
+                        Agent
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                @using (Html.BeginForm("Create", "Agent", FormMethod.Post))
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Agent Detail</h3>
+                        </div>
+                        <div class="card-body">
+                            @Html.Hidden("AgencyId")
+                            @Html.TextEditorFor(model => model.Email, "mb-2")
+                            @Html.DropDownFor(model => model.Privilege, Model.Privileges)
+                        </div>
+                        <div class="card-footer">
+                            @Html.ButtonWithLabel(
+                                string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_SaveAndInvite),
+                                buttonType: PresentationConstant.ButtonType.Submit,
+                                id: "btn-save",
+                                cssClass: "btn-primary")
+                            @Html.LinkButtonWithLabel(
+                                string.Format("<i class='fa fa-remove mr-1'></i> {0}", GeneralResource.General_Cancel),
+                                id: "link-cancel",
+                                cssClass: "btn-link",
+                                href: $"/Administrator/Agency/Edit/{Model.AgencyId}")
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AgentCreate.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

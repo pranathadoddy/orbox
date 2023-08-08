@@ -1,0 +1,12 @@
+﻿.google-button {
+    margin-right: 10px;
+    padding: 0;
+    background: transparent;
+    box-shadow: unset;
+    display: flex;
+}
+
+    .google-button img {
+        width: 45px;
+        border-radius: 50%;
+    }

@@ -1,0 +1,88 @@
+﻿@using Framework.Application.Presentation
+@using Framework.Core.Resources
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@model Orderbox.Mvc.Areas.Agent.Models.Store.EditModel
+
+@{
+    ViewData["Title"] = "Store";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="page-pretitle">
+                        Edit Merchant
+                    </div>
+                    <h2 class="page-title">
+                        @Model.MerchantName
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-2 mb-5">
+                @{ await Html.RenderPartialAsync("../_SideNavigation", Model.SideNavigation); }
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-10">
+                @using (Html.BeginForm("Edit", "Store", new { 
+                    area = "Agent", 
+                    tenantId = string.Empty, 
+                    id = string.Empty
+                    
+                }, FormMethod.Post, false, new {
+                    data_delete_url = Url.Action("Delete", "Store", new { area = "Agent", id = Model.Id, tenantId = Model.TenantId}),
+                    data_delete_confirmation_message = GeneralResource.General_DeleteConfirmationMessage,
+                    data_delete_warning = GeneralResource.General_DeleteWarning,
+                    data_custom_delete_yes_button = GeneralResource.General_YesDeleteIt,
+                }))
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Store</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    @Html.HiddenFor(model => model.Id)
+                                    @Html.HiddenFor(model => model.TenantId)
+                                    @Html.DropDownFor(model => model.CityId, Model.Cities, "mb-2")
+                                    @Html.TextEditorFor(model => model.Name, "mb-2")
+                                    @Html.TextEditorFor(model => model.Address, "mb-2")
+                                    @Html.TextEditorFor(model => model.MapUrl, "mb-2")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @Html.ButtonWithLabel(
+                                string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_Update),
+                                buttonType: PresentationConstant.ButtonType.Submit,
+                                id: "btn-save",
+                                cssClass: "btn-primary")
+                            @Html.ButtonWithLabel(  
+                                  string.Format("<i class='fa fa-trash mr-1'></i> {0}", GeneralResource.General_Delete),
+                                  buttonType: PresentationConstant.ButtonType.Button,
+                                  id: "btn-delete",
+                                  cssClass: "btn-danger")
+                            @Html.LinkButtonWithLabel(
+                                string.Format("<i class='fa fa-remove mr-1'></i> {0}", GeneralResource.General_Cancel),
+                                id: "link-cancel",
+                                cssClass: "btn-link",
+                                href: $"/Agent/Store/Index/{Model.SideNavigation.MerchantId}")
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AgentStoreEdit.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

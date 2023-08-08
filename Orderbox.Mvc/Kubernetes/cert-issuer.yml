@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: orbox.id-cert-issuer
+  namespace: orderbox
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: wiratanaya@hotmail.com
+    privateKeySecretRef:
+      name: orbox.id-cert-privkeysecret
+    solvers:
+    - selector:
+        dnsZones:
+          - 'orbox.id'
+          - '*.orbox.id'
+      dns01:
+        route53:
+          region: ap-southeast-1
+          hostedZoneID: Z07465251TBBQ14BWUEVQ

@@ -1,0 +1,83 @@
+﻿@using Framework.Core.Resources
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@using Microsoft.Extensions.Configuration
+@{
+    ViewData["Title"] = "Merchant";
+    Layout = $"{this.User.Identity.GetRole()}Layout/_Layout";
+}
+@inject IConfiguration Configuration
+@model Orderbox.Mvc.Areas.Agent.Models.Merchant.EditModel
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        Edit Merchant
+                    </div>
+                    <h2 class="page-title">
+                        @Model.Name
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-2 mb-5">
+                @{ await Html.RenderPartialAsync("../_SideNavigation", Model.SideNavigation); }
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-10">
+                @using (Html.BeginForm("Edit", "Merchant", FormMethod.Post, new
+                {
+                    area = "Agent"
+                }))
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Pengaturan Umum</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    @Html.SwitcherFor(model => model.ShopEnabled)
+                                    <div class="mb-2"></div>
+                                    @Html.SwitcherFor(model => model.AllowToAccessCategory)
+                                    <div class="mb-2"></div>
+                                    @Html.SwitcherFor(model => model.AllowToAccessProduct)
+                                    <div class="mb-2"></div>
+                                    @Html.SwitcherFor(model => model.AllowToAccessProfile)
+                                    <div class="mb-2"></div>
+                                    @Html.SwitcherFor(model => model.AllowToAccessCheckoutSetting)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @Html.ButtonWithLabel(
+                                string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_Update),
+                                buttonType: PresentationConstant.ButtonType.Submit,
+                                id: "btn-save",
+                                cssClass: "btn-primary")
+                            @Html.LinkButtonWithLabel(
+                                string.Format("<i class='fa fa-remove mr-1'></i> {0}", GeneralResource.General_Cancel),
+                                id: "link-cancel",
+                                cssClass: "btn-link",
+                                href: "/Agent/Merchant")
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AgentMerchantEdit.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

@@ -1,0 +1,261 @@
+﻿@{
+    Layout = "_PlainLayout";
+}
+
+@using Framework.Core.Resources
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Microsoft.Extensions.Configuration
+@using Orderbox.Core
+@using Orderbox.Core.SystemCode
+@using Orderbox.Core.Resources.Common
+@using System.Globalization
+@using System.Web
+
+@inject IConfiguration Configuration
+@model Orderbox.Mvc.Areas.Tenant.Models.Order.OrderDetailModel
+
+<div page class="container pt-3 max-w-576">
+    <div class="row">
+        <div class="col-12 mb-5">
+            <div class="d-flex flex-row mb-3 border-bottom pb-2">
+                <div style="flex:1" class="d-flex flex-row align-items-center">
+                    <div class="avatar avatar-md mr-3" style="background-image: url(@Model.TenantLogoUrl)"></div>
+                    <div>
+                        <a href="/" class="text-default">@Model.TenantName</a>
+                    </div>
+                </div>
+                @if (!Model.TenantUnderAgency && !string.IsNullOrEmpty(Model.TenantPhone))
+                {
+                    var tenantOrderDetailLinkText = $"{Configuration.GetSection("Application")["RootDomain"]}";
+                    var tenantOrderDetailLinkHref = $"{string.Format(Configuration.GetSection("Application")["UrlFormat"], tenantOrderDetailLinkText)}/Order/View/{Model.OrderId}";
+                    var encodedNotifySellerChatText = HttpUtility.UrlEncode(string.Format(OrderResource.NotifySellerChatText, Model.OrderNumber, tenantOrderDetailLinkHref));
+                    var phoneLink = string.Format("tel:{0}", Model.TenantPhone);
+                    var waLink = string.Format("https://wa.me/{0}{1}?text={2}", Model.TenantPhoneAreaCode, Model.TenantPhone, encodedNotifySellerChatText);
+
+                    <div style="flex:1" class="d-flex flex-row align-items-center justify-content-end">
+                        <a class="btn btn-primary text-white mr-2" href="@phoneLink"><i class="fa fa-phone"></i></a>
+                        <a class="btn btn-primary text-white" href="@waLink" target="_blank"><i class="fa fa-whatsapp"></i></a>
+                    </div>
+                }
+            </div>
+            <div class="page-title-box mb-2">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="page-title">
+                            Informasi Pesanan
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group mb-2">
+                        <label class="form-label">Order Number</label>
+                        <input type="text" class="form-control" name="example-text-input" value="@Model.OrderNumber" readonly>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label class="form-label">Buyer Name</label>
+                        <input type="text" class="form-control" name="example-text-input" value="@Model.BuyerName" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Order Status</label>
+                        <input type="text" class="form-control" name="example-text-input" value="@Model.OrderStatus" readonly>
+                    </div>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.PaymentOptionCode))
+            {
+                <div class="page-title-box mb-2">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="page-title">
+                                Pembayaran
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        @if (Model.PaymentOptionCode != CoreConstant.PaymentOption.PaymentGateway)
+                        {
+                            <h2>@Model.PaymentProviderName</h2>
+                            @if (Model.PaymentOptionCode == CoreConstant.PaymentOption.Cod)
+                            {
+                                <p>@Model.PaymentDescription</p>
+                            }
+                            else
+                            {
+                                <p>@Model.PaymentAccountName<br />@Model.PaymentAccountNumber</p>
+                            }
+
+                            <div class="d-flex align-items-center p-3 border-radius">
+                                @if (Model.PaymentStatus == CoreConstant.PaymentStatus.Paid)
+                                {
+                                    <span class="text-green flex-fill text-left h1 m-0"><i class="fa fa-check"></i> LUNAS</span>
+                                }
+                                else if (Model.PaymentStatus == CoreConstant.PaymentStatus.Cancelled || Model.PaymentStatus == CoreConstant.PaymentStatus.Expired)
+                                {
+                                    <span class="text-gray flex-fill text-left h1 m-0">@PaymentStatusCode.Item.GetDescription(Model.PaymentStatus)</span>
+                                }
+                                <span class="flex-fill text-right h1 m-0">
+                                    <small class="text-smaller">@Model.Currency</small>
+                                    @Model.OrderItems.Sum(item => (item.UnitPrice - (item.Discount * item.UnitPrice / 100)) * item.Quantity).ToString("N0", new CultureInfo("id-ID"))
+                                </span>
+                            </div>
+
+                            @if (Model.PaymentStatus == CoreConstant.PaymentStatus.Ready)
+                            {
+                                if (string.IsNullOrEmpty(Model.PaymentProof))
+                                {
+                                    @using (Html.BeginForm("UploadPaymentProof", "Order", FormMethod.Post, new
+                                    {
+                                        id = "form-payment-proof",
+                                        area = "Tenant",
+                                        @class = "d-none"
+                                    }))
+                                    {
+                                        <input type="hidden" id="OrderId" name="OrderId" value="@Model.OrderId" />
+                                        <input type="file" class="form-file-input" id="PaymentProof" name="PaymentProof" />
+                                    }
+                                    <button class="btn btn-block btn-primary d-flex align-items-center p-3 border-radius btn-upload-payment-proof" type="button">
+                                        <span class="flex-fill h3 m-0">UPLOAD BUKTI PEMBAYARAN</span>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <div class="w-100 text-center"><img src="@Model.PaymentProof" /></div>
+                                }
+                            }
+                        }
+                        else 
+                        {
+                            if (Model.PaymentStatus == CoreConstant.PaymentStatus.Ready)
+                            {
+                                <div class="d-flex align-items-center p-3">
+                                    <span class="flex-fill text-right h1 m-0">
+                                        <small class="text-smaller">@Model.Currency</small>
+                                        @Model.OrderItems.Sum(item => (item.UnitPrice - (item.Discount * item.UnitPrice / 100)) * item.Quantity).ToString("N0", new CultureInfo("id-ID"))
+                                    </span>
+                                </div>
+                                <a class="btn btn-block btn-primary d-flex align-items-center p-3 border-radius" href="@Model.PaymentGatewayInvoiceUrl">
+                                    <span class="flex-fill h3 m-0">BAYAR SEKARANG</span>
+                                </a>
+                            }
+                            else if (Model.PaymentStatus == CoreConstant.PaymentStatus.Cancelled || Model.PaymentStatus == CoreConstant.PaymentStatus.Expired)
+                            {
+                                <div class="d-flex align-items-center p-3">
+                                    <span class="flex-fill text-left text-gray h1 m-0 text-uppercase">@PaymentStatusCode.Item.GetDescription(Model.PaymentStatus)</span>
+                                    <span class="flex-fill text-right h1 m-0">
+                                        <small class="text-smaller">@Model.Currency</small>
+                                        @Model.OrderItems.Sum(item => (item.UnitPrice - (item.Discount * item.UnitPrice / 100)) * item.Quantity).ToString("N0", new CultureInfo("id-ID"))
+                                    </span>
+                                </div>
+                            }
+                            else if (Model.PaymentStatus == CoreConstant.PaymentStatus.Paid)
+                            {
+                                <div class="d-flex align-items-center p-3">
+                                    <span class="text-green flex-fill text-left h1 m-0"><i class="fa fa-check"></i> LUNAS</span>
+                                    <span class="flex-fill text-right h1 m-0">
+                                        <small class="text-smaller">@Model.Currency</small>
+                                        @Model.OrderItems.Sum(item => (item.UnitPrice - (item.Discount * item.UnitPrice / 100)) * item.Quantity).ToString("N0", new CultureInfo("id-ID"))
+                                    </span>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+
+            <div class="page-title-box mb-2">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <div class="page-title">
+                            Rincian
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <table class="table card-table table-vcenter">
+                    <tbody>
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            var discountedPrice = item.UnitPrice - (item.Discount * item.UnitPrice / 100);
+                            <tr>
+                                <td class="w-25p p-2 position-relative">
+                                    <img src="@(item.ProductImageUrl)" />
+                                    @if (item.Discount > 0)
+                                    {
+                                        <span class="item-discount">-@item.Discount.ToString("N0")%</span>
+                                    }
+                                </td>
+                                <td class="p-1">
+                                    @item.ProductName
+                                    <div class="text-orange">
+                                        <small class="text-small">@Model.Currency</small>
+                                        <text>&nbsp;</text>
+                                        @if (item.Discount > 0)
+                                        {
+                                            <span class="text-linethrough">
+                                                @item.UnitPrice.ToString("N0", new CultureInfo("id-ID"))
+                                            </span>
+                                            <text>&nbsp;</text>
+
+                                        }
+                                        @discountedPrice.ToString("N0", new CultureInfo("id-ID")) x @item.Quantity @item.Unit
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(item.Note))
+                                    {
+                                        <div class="note">
+                                            <small class="text-muted">Catatan :</small><br />
+                                            <strong>@item.Note</strong>
+                                        </div>
+                                    }
+                                </td>
+                                <td class="w-25p text-right p-2">
+                                    <strong>
+                                        <small class="text-small">@Model.Currency</small>
+                                        @((discountedPrice * item.Quantity).ToString("N0", new CultureInfo("id-ID")))
+                                    </strong>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <a href="/" class="btn btn-outline btn-outline-primary btn-block">Kembali Ke Toko</a>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="payment-proof-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="m-0">Upload Bukti Pembayaran</h2>
+            </div>
+            <div class="modal-body croppie-container">
+                <input type="hidden" name="FileName">
+                <div id="payment-proof-croppie"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@GeneralResource.General_Close</button>
+                @Html.ButtonWithLabel(GeneralResource.General_Save,
+                      buttonType: PresentationConstant.ButtonType.Button,
+                      id: "btn-upload",
+                      cssClass: "btn-primary")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('load', function () {
+            var page = new TenantOrderOrderDetail.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

@@ -1,0 +1,59 @@
+﻿@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@using Orderbox.Core
+@using Microsoft.Extensions.Configuration
+@{
+    ViewData["Title"] = "Website Management";
+    Layout = "_PlainLayout";
+}
+@inject IConfiguration Configuration
+@model Orderbox.Mvc.Areas.Tenant.Models.Order.InvoiceModel
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="text-center p-5">
+                        <h3 class="card-title">@Model.Order.Tenant.Name</h3>
+                        <h5>@Model.Order.Tenant.Address</h5>
+                        <small>@string.Format("0{0}", Model.Order.Tenant.Phone)</small>
+                    </div>
+                    <div class="border-top mb-2"></div>
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach (var item in Model.Order.OrderItems)
+                            {
+                                <div class="col-md-12 mb-4">
+                                    <div class="d-flex align-items-center">
+                                        <div class="ml-5" style="width:80%">
+                                            <h4 class="m-0">@item.ProductName</h4>
+                                            <small class="text-muted">Rp @string.Format("{0:N0}", @item.UnitPrice) x @item.Quantity</small>
+                                            <br />
+                                            @if (item.Discount > 0)
+                                            {
+                                                <small class="text-muted">Discount @(item.Discount)%</small>
+                                            }
+                                        </div>
+                                        <div class="mr-5" style="width:40%; text-align: right;">
+                                            <strong>Rp @string.Format("{0:N0}", @item.ExtTotalPrice)</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="col-md-12 border-top pt-5">
+                                <div class="col-md-6 pull-right p-3">
+                                    <h3 class="pull-right mr-2">
+                                        Total : Rp @string.Format("{0:N0}", Model.Order.OrderItems.Sum(i => i.ExtTotalPrice))
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </main>
+</div>

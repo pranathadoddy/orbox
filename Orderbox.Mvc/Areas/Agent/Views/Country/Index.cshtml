@@ -1,0 +1,58 @@
+﻿@using Framework.Core.Resources
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Core.Resources.Common
+@model Orderbox.Mvc.Areas.Agent.Models.Country.IndexModel
+@{
+    ViewData["Title"] = "Merchant Business Operation";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="page-pretitle">
+                        List
+                    </div>
+                    <h2 class="page-title">
+                        Business Operation
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row row-deck">
+            <div class="col-12">
+                <div class="card">
+                    <table grid
+                            class="table table-striped table-hover bootgrid-table"
+                            data-url="/Agent/Country/PagedSearchGridJson"
+                            data-edit-url="/Agent/Country/Edit">
+                        <thead>
+                            <tr>
+                                <th data-column-id="id" data-formatter="Edit" data-header-css-class="w-7"></th>
+                                <th data-column-id="name">@LocationResource.Country</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="card-footer">
+                        @Html.LinkButtonWithLabel(
+                                string.Format("<i class='fa fa-plus'></i> {0}", GeneralResource.General_Add),
+                                id: "link-add",
+                                cssClass: "btn-primary",
+                                href: $"/Agent/Country/Create"
+                            )
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AgentCountryIndex.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

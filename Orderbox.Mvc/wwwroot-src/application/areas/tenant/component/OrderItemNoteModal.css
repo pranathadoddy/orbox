@@ -1,0 +1,25 @@
+﻿.order-item-note-modal ons-card {
+    color: black;
+    padding: 0;
+    border-radius: 5px;
+}
+
+.order-item-note-modal ons-card .title {
+    font-size: 1em;
+    padding: 2px 10px;
+    margin: 0;
+}
+
+    .order-item-note-modal ons-card textarea {
+        padding: 10px 10px;
+        margin: 10px 10px;
+        width: calc(100% - 43px);
+    }
+
+    .order-item-note-modal ons-card .note-container-button {
+        margin: 0px 10px 0px 10px;
+    }
+
+        .order-item-note-modal ons-card .note-container-button ons-button {
+            margin-bottom: 10px;
+        }

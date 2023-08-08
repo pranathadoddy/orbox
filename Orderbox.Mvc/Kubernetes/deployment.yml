@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderbox
+  namespace: orderbox
+  labels:
+    app: orderbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orderbox
+  template:
+    metadata:
+      labels:
+        app: orderbox
+    spec:
+      containers:
+      - name: orderbox
+        image: registry.gitlab.com/iketut/obox:latest
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Production
+        - name: DEPLOYMENT_CONTROL
+          value: '1646022527694'
+      imagePullSecrets:
+      - name: gitlab-registry
+      restartPolicy: Always

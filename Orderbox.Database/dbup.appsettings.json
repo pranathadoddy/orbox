@@ -1,0 +1,5 @@
+﻿{
+  "ConnectionStrings": {
+    "DefaultConnection": "server=localhost;port=3306;user=orderbox-local;password=temp123;database=orderbox-local;allow user variables=true"
+  }
+}

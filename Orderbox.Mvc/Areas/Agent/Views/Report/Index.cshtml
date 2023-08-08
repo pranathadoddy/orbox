@@ -1,0 +1,77 @@
+﻿@model Orderbox.Mvc.Areas.Agent.Models.Report.IndexModel
+@{
+    ViewData["Title"] = "Report";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="page-pretitle">
+                        Edit Merchant
+                    </div>
+                    <h2 class="page-title">
+                        @Model.MerchantName
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-2 mb-5">
+                @{ await Html.RenderPartialAsync("../_SideNavigation", Model.SideNavigation); }
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-10">
+                <section class="section">
+                    <div class="container">
+                        <div class="row mb-5">
+                            <div class="col-sm-12 col-lg-3 offset-lg-9">
+                                <div class="input-icon in-page-header" monthyearpicker>
+                                    <input type="text" readonly="" class="form-control datepicker-dropdown" />
+                                    <span class="input-icon-addon"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            @await Html.PartialAsync("_SummaryTotalOrder", this.Model)
+                            @await Html.PartialAsync("_SummaryTotalFinishedOrder", this.Model)
+                            @await Html.PartialAsync("_SummaryTotalCancelledOrder", this.Model)
+                            @await Html.PartialAsync("_SummaryRevenue", this.Model)
+                        </div>
+                    </div>
+                </section>
+                <section class="section section--dark">
+                    <div class="container">
+                        <div class="row">
+                            @await Html.PartialAsync("_ChartPopularProductSoldAmount", this.Model)
+                            @await Html.PartialAsync("_ChartPopularProductTopRevenue", this.Model)
+                        </div>
+                    </div>
+                </section>
+                <section class="section">
+                    <div class="container">
+                        <div class="row">
+                            @await Html.PartialAsync("_TrendRevenue", this.Model)
+                        </div>
+                    </div>
+                </section>
+                <section class="section section--dark">
+                    <div class="container">
+                        <div class="row">
+                            @await Html.PartialAsync("_SoldItemListView", this.Model)
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AgentReportIndex.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

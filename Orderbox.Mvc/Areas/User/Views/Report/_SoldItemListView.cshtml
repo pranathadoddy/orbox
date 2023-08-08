@@ -1,0 +1,24 @@
+﻿@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Core.Resources.Common
+@model Orderbox.Mvc.Areas.User.Models.Report.IndexModel
+
+<div class="col-md-12 col-lg-12">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title text-uppercase">@ReportResource.SoldItemList</h3>
+        </div>
+        <div id="itemdetail" 
+             class="card-body o-auto overflow-auto"
+             data-url="/User/Report/GetItemSoldListJson"
+             infinite-list>
+            @Html.SimpleDivPlaceholder("spinnerpane")
+            <ul class="list-unstyled list-separated" style="max-height: 25rem;" list-container>
+                <li class="list-separated-item">
+                    <div class="row align-items-center">
+                        <span>No Data</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

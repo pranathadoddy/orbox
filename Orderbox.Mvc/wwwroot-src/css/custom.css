@@ -1,0 +1,308 @@
+﻿.profile-logo {
+    width: 9rem !important;
+    height: 9rem !important;
+    display: block;
+    margin: auto;
+    background-position: center center;
+    background-size: cover;
+}
+
+.agency-icon {
+    width: 9rem !important;
+    height: 9rem !important;
+    display: block;
+    margin: auto;
+    background-position: center center;
+    background-size: cover;
+}
+
+.profile-wallpaper {
+    width: auto;
+    height: 160px;
+    display: block;
+    margin: auto;
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.croppie-container {
+    padding-bottom: 1.5rem;
+}
+
+#logo-croppie, #product-croppie, #icon-croppie, #wallpaper-croppie {
+    height: 400px;
+}
+
+#payment-proof-croppie {
+    height: 450px;
+}
+
+.form-group-upload {
+    display: inline-block;
+    width: 100%;
+}
+
+    .form-group-upload .form-file {
+        border: 1px solid rgba(53, 64, 82, 0.16);
+        padding: 5px;
+        height: calc(1.4666667em + 0.75rem + 4px) !important;
+    }
+
+.card-header.logo-wrapper {
+    border-bottom: none !important;
+}
+
+span.select2 {
+    margin-right: 0.25rem !important;
+}
+
+span.select2-selection.select2-selection--single {
+    min-height: calc(1.4666667em + 0.75rem + 2px);
+    padding: 0.175rem 0 !important;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.4666667;
+    color: #354052;
+    background-color: #ffffff;
+    background-clip: padding-box;
+    border: 1px solid rgba(53, 64, 82, 0.16);
+    border-radius: 3px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.wrapping-search span.select2-selection__rendered {
+    text-align: center;
+}
+
+.wrapping-search span.select2-selection__arrow {
+    top: 5.2px !important;
+}
+
+.wrapping-search span.select2.select2-container.select2-container--default {
+    width: 209.333px !important;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.w-30p {
+    width: 30%;
+}
+
+.max-w-768 {
+    max-width: 768px;
+}
+
+.max-w-576 {
+    max-width: 576px;
+}
+
+img.flag {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.background-orange {
+    background-color: #F37021;
+    border-color: #F37021;
+}
+
+.text-orange {
+    color: #F37021;
+}
+
+.text-small {
+    font-size: .8em;
+}
+
+.text-smaller {
+    font-size: .6em;
+}
+
+.input-info {
+    width: 100%;
+    margin-top: 0.25rem;
+}
+
+.header-toggler {
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    color: #9aa0ac;
+}
+
+    .header-toggler:hover {
+        color: #6e7687;
+    }
+
+.header-toggler-icon {
+    position: absolute;
+    width: 1rem;
+    height: 2px;
+    color: inherit;
+    background: currentColor;
+    border-radius: 3px;
+    top: 50%;
+    left: 50%;
+    margin: -2px 0 0 -.5rem;
+    box-shadow: 0 5px currentColor, 0 -5px currentColor;
+}
+
+.tooltip.show .tooltip-inner {
+    text-align: left;
+}
+
+.login-logo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2bcbba;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+
+    .login-logo img {
+        width: 50px;
+    }
+
+.product-image-container .btn {
+    flex: 1;
+    border-radius: unset;
+}
+
+.hide-element {
+    position: absolute;
+    top: -999px;
+}
+
+.product-image {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 200px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: 0;
+    border: unset;
+    border-radius: unset;
+}
+
+.product-image-add {
+    height: 200px;
+    display: flex;
+    font-size: 24pt;
+}
+
+    .product-image-add a {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+    }
+
+form {
+    width: 100%;
+}
+
+.badge-primary {
+    background-color: #2bcbba;
+}
+
+.badge-orange {
+    background-color: #F37021;
+}
+
+.badge-yellow {
+    background-color: #f1c40f;
+}
+
+.badge-green {
+    background-color: #5eba00;
+}
+
+.badge-red {
+    background-color: #cd201f;
+}
+
+@media only screen and (min-width: 768px) {
+    .collapse.dont-collapse-sm {
+        display: block;
+        height: auto !important;
+        visibility: visible;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .wrapping-search {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+        .wrapping-search span.select2.select2-container.select2-container--default {
+            width: 100% !important;
+        }
+
+    .bootgrid-header .align-middle {
+        width: 100% !important;
+    }
+
+    .topnav + .content-page {
+        padding-top: calc(7rem + 1px) !important;
+    }
+}
+
+.form-control.datepicker-dropdown {
+    border-radius: 19px;
+    background-color: white;
+}
+
+@media (min-width: 1200px) {
+    .display-4 {
+        font-size: 3rem;
+    }
+}
+
+.text-linethrough {
+    text-decoration: line-through;
+}
+
+.item-discount {
+    display: block;
+    background: #FF5252;
+    color: white;
+    padding: 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: .85rem;
+    border-top-left-radius: 3px;
+}
+
+.font-bigger {
+    font-size: 1.2rem;
+}
+
+.selectgroup-input:checked + .selectgroup-button {
+    border-color: #2bcbba;
+    z-index: 1;
+    color: #2bcbba;
+    background: #D4FEFA;
+}
+
+.border-radius {
+    border-radius: 3px;
+}
+
+.w-10-custom{
+    width: 10rem !important;
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 520px;
+    }
+}

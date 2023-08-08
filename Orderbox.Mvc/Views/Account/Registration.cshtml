@@ -1,0 +1,60 @@
+﻿@{
+    Layout = "_PlainLayout";
+}
+
+@using Framework.Core.Resources
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Core.Resources.Account
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@model Orderbox.Mvc.Models.Account.RegistrationModel
+
+<div id="page" class="container">
+    <div class="row">
+        <div class="col col-login mx-auto">
+            <div class="text-center my-5 login-logo">
+                <img src="https://cdn.orbox.id/obox/assets/img/logo.png" class="py-2" />
+                Orderbox
+            </div>
+            @using (Html.BeginForm("Registration", "Account", FormMethod.Post, new
+            {
+                @class = "card bg-white-transparent"
+            }))
+            {
+                <div class="card-body p-3 p-md-6">
+                    <div class="card-title">Sign Up</div>
+                    @Html.SimpleDivPlaceholder("errorpane")
+                    @Html.HiddenFor(model => model.AgencyId)
+                    @Html.EmailEditorFor(model => model.EmailAddress)
+                    @Html.FormFooterButton(GeneralResource.General_SignUp,
+                        buttonType: PresentationConstant.ButtonType.Submit,
+                        id: "btn-register",
+                        cssClass: "btn-primary btn-block")
+                    @Html.SimpleDivPlaceholder("spinnerpane")
+                    @Html.HiddenFor(model=>model.CaptchaToken)
+                </div>
+            }
+            <div class="text-center text-muted">
+                @RegistrationResource.SignInOfferMessage <a href="/Account/Login">@GeneralResource.General_SignIn</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://www.google.com/recaptcha/api.js?render=@Configuration.GetSection("ReCaptcha")["SiteKey"]"></script>
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AccountRegistration.default($('#page'));
+            page.register();
+        });
+
+        grecaptcha.ready(function () {
+            grecaptcha.execute("@Configuration.GetSection("ReCaptcha")["SiteKey"]", { action: 'homepage' })
+                .then(function (token) {
+                    $("#CaptchaToken").val(token);
+            });
+        });
+    </script>
+}

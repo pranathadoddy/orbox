@@ -1,0 +1,151 @@
+﻿.home-screen .menu {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    width: 100%;
+    justify-content: flex-end;
+    background-color: teal;
+    padding: 5px;
+    height: 46px;
+}
+.home-screen .burger-menu {
+    
+}
+.home-screen .google-auth {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.home-screen .google-auth span {
+    margin-left: 1em;
+    font-size: .6rem;
+}
+.home-screen .google-auth .button--material {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.home-screen .google-auth img {
+    border-radius: 50%;
+}
+.home-screen .burger-menu ons-button {
+   padding: 0 10px;
+   height: 32px;
+}
+
+.home-screen .text-white {
+    color: #ffffff;
+}
+
+.wallpaper {
+    padding-bottom: 30px;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    background-color: #00aca1;
+}
+
+.tenant-profile {
+    padding: 20px;
+    padding-top: 76px;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.tenant-profile-picture {
+    display: block;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin: 0 auto;
+}
+
+.tenant-profile h5 {
+    margin: 5px 0;
+}
+
+.tenant-profile p {
+    font-size: .9em;
+    margin: 0 0 5px 0;
+}
+
+.tenant-profile .button {
+    margin-right: 5px;
+    background-color: transparent;
+    border: 1px solid #FFFFFF;
+}
+
+.category {
+    padding-top: 35px;
+    overflow: hidden;
+}
+
+    .category .list {
+        width: 100%;
+        white-space: nowrap;
+        overflow-y: hidden;
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+        background-color: transparent;
+        padding: 5px;
+        background-image: none;
+    }
+
+        .category .list::-webkit-scrollbar {
+            display: none;
+        }
+
+    .category .list-item {
+        padding: 0;
+        display: inline;
+    }
+
+        .category .list-item:last-of-type {
+            margin-right: 10px;
+        }
+
+        .category .list-item .list-item__center {
+            display: inline;
+            padding: 5px;
+            font-size: .9em;
+            background-image: unset;
+        }
+
+            .category .list-item .list-item__center a {
+                display: inline-block;
+                text-decoration: unset;
+                color: unset;
+                padding: 8px;
+                border: 1px solid #dedede;
+                border-radius: 5px;
+                background: #ffffff;
+            }
+
+                .category .list-item .list-item__center a.active {
+                    background-color: rgb(0, 172, 161);
+                    color: #ffffff;
+                }
+
+.fixed-header .category {
+    position: fixed;
+    top: 116px;
+    background: #FFFFFF;
+    z-index: 98;
+    width: 100%;
+    border-bottom: 1px solid #DEDEDE;
+    padding: 5px 5px 5px 0;
+}
+
+.home-product.product {
+    padding-top: 5px;
+}

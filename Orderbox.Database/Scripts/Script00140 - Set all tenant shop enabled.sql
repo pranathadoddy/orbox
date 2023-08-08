@@ -1,0 +1,1 @@
+﻿UPDATE com_Tenant SET EnableShop = True;

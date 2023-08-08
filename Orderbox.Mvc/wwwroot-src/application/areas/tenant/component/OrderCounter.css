@@ -1,0 +1,25 @@
+﻿.order-counter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex:1;
+}
+
+.order-counter__qty {
+    display: inline-block;
+    width: 25%;
+    border: 0px;
+    border-bottom: 1px solid #F37021;
+    font-size: 12px;
+    text-align: center;
+    margin: 0 5px;
+}
+
+.order-counter__icon-button {
+    font-size: 1.1em;
+    display: inline-block;
+}
+
+.order-counter__icon {
+    font-size: 14px;
+}

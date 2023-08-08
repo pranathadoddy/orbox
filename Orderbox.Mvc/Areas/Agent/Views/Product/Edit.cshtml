@@ -1,0 +1,177 @@
+﻿@using Framework.Core.Resources
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Core.Resources.Common
+@using Orderbox.Core
+@model Orderbox.Mvc.Areas.Agent.Models.Product.EditModel
+@{
+    ViewData["Title"] = "Product";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="page-pretitle">
+                        Edit Merchant
+                    </div>
+                    <h2 class="page-title">
+                        @Model.MerchantName
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-2 mb-5">
+                @{ await Html.RenderPartialAsync("../_SideNavigation", Model.SideNavigation); }
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-10">
+                <div class="row">
+                    <div class="col-12">
+                        @using (Html.BeginForm("Edit", "Product", 
+                        new { area = "Agent", tenantId = string.Empty, id = string.Empty }, 
+                        FormMethod.Post,
+                        false, 
+                        new
+                            {
+                                data_search_agency_category_url = "/Agent/AgencyCategory/PagedSearchGridJson"
+                            }))
+                        {
+                            @Html.HiddenFor(model => model.TenantId)
+                            @Html.HiddenFor(model => model.Id)
+                            <div class="card">
+                                <div class="card-body">
+                                    @Html.SwitcherFor(model => model.IsAvailable)
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Product Detail</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            @Html.DropDownFor(model => model.CategoryId, Model.Categories, "mb-2")
+                                            <div class="form-group mb-2">
+                                                <label class="form-label" for="MultipleAgencyCategory">Agency Kategori *</label>
+                                                <select class="form-control" id="MultipleAgencyCategory" name="AgencyCategoryIds[]" required="" multiple="multiple" aria-required="true">
+                                                    @foreach(var productAgencyCategory in Model.ProductAgencyCategories)
+                                                    {
+                                                        <option value="@productAgencyCategory.Value" selected>@productAgencyCategory.Text</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            @Html.TextEditorFor(model => model.Name, "mb-2")
+                                            @Html.MultilineTextEditorFor(model => model.Description, "mb-2", maxLength: PresentationConstant.TextInputAttribute.LargeTextMaxLength)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Pricing</h3>
+                                </div>
+                                <div class="card-body">
+                                    @Html.NumberEditorFor(model => model.Price, "mb-2", maxLength: PresentationConstant.TextInputAttribute.MaxPriceDigitLength)
+                                    @Html.TextEditorFor(model => model.Discount, "mb-2")
+                                    @Html.TextEditorFor(model => model.Unit, "mb-2")
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-footer">
+                                    @Html.ButtonWithLabel(
+                                string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_Update),
+                                buttonType: PresentationConstant.ButtonType.Submit,
+                                id: "btn-save",
+                                cssClass: "btn-primary")
+                                    @Html.LinkButtonWithLabel(
+                                string.Format("<i class='fa fa-remove mr-1'></i> {0}", GeneralResource.General_Cancel),
+                                id: "link-cancel",
+                                cssClass: "btn-link",
+                                href: $"/Agent/Product/Index/{Model.SideNavigation.MerchantId}")
+                                </div>
+                            </div>
+                        }
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Product Images</h3>
+                            </div>
+                            <div class="card-body">
+                                @using (Html.BeginForm("", "", FormMethod.Post, new
+                                {
+                                    data_set_primary_confirmation_message = "Are you sure to set this image as primary?",
+                                    data_delete_confirmation_message = ProductResource.DeleteConfirmationMessage,
+                                    data_delete_warning = GeneralResource.General_DeleteWarning,
+                                    data_custom_delete_yes_button = GeneralResource.General_YesDeleteIt
+                                }))
+                                {
+                                    <div class="row">
+                                        @foreach (var image in Model.ProductImages)
+                                        {
+                                            <div class="col-12 col-md-3 product-image-container mb-3">
+                                                <div class="card product-image" style="background-image: url(@image.FileName)"></div>
+                                                <div class="m-0 d-flex">
+                                                    @if (!image.IsPrimary)
+                                                    {
+                                                        <a href="/Agent/Product/SetPrimary/@Model.TenantId/@image.Id" class="btn btn-primary btn-set-primary"><i class="fa fa-check mr-1"></i> Set Primary</a>
+                                                    }
+                                                    <a href="/Agent/Product/DeleteImage/@Model.TenantId/@image.Id" class="btn btn-danger btn-remove-product-image"><i class="fa fa-trash mr-1"></i> Remove</a>
+                                                </div>
+                                            </div>
+                                        }
+                                        @{
+                                            var displayNoneClass = "d-none";
+                                        }
+                                        @if (Model.ProductImages.Count() < CoreConstant.Settings.MaxProductImage)
+                                        {
+                                            displayNoneClass = "";
+                                        }
+                                        <div class="col-12 col-md-3 @displayNoneClass">
+                                            <div class="card border border-dashed text-center product-image-add">
+                                                <a href="#"><i class="fa fa-plus"></i></a>
+                                                <input type="file" class="d-none" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal fade" id="product-modal" tabindex="-1" role="dialog" aria-hidden="true" data-upload-url="/Agent/Product/UploadProductImage">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Gambar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body croppie-container">
+                <input type="hidden" id="ProductId" name="ProductId" value="@Model.Id" />
+                <input type="hidden" id="ImageName" name="ImageName" />
+                <div id="product-croppie"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@GeneralResource.General_Close</button>
+                @Html.ButtonWithLabel(GeneralResource.General_Save,
+                buttonType: PresentationConstant.ButtonType.Button,
+                id: "btn-upload",
+                cssClass: "btn-primary")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script defer type="text/javascript">
+    window.addEventListener('DOMContentLoaded', function () {
+        var page = new AgentProductEdit.default($('[page]'));
+        page.register();
+    });
+</script>
+}

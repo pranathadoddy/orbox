@@ -1,0 +1,107 @@
+﻿@using Orderbox.Core.SystemCode
+@using Orderbox.Core.Resources.Common
+@using Framework.Core.Resources
+@model Orderbox.Mvc.Areas.Agent.Models.CheckoutSetting.IndexModel
+
+<div id="paymentModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="form-payment" id="form-payment" tenant-id="@Model.TenantId">
+                <div class="card mb-0">
+                    <div class="card-header">
+                        <h2 class="m-0">Metode Pembayaran</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" id="payment-panel-group">
+                            <div class="col-md-12">
+                                <div class="form-group mb-2">
+                                    @Html.HiddenFor(model => model.TenantId)
+                                    <label class="form-label" for="" id="label-po">@TenantResource.PaymentOption</label>
+                                    <select class="form-control" id="PaymentOptionCode" name="PaymentOptionCode">
+                                        @foreach (var code in PaymentOptionCode.Item.GetCodeList())
+                                        {
+                                            <option value="@code.Value">@code.Description</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-2 panel-bank">
+                                    <label class="form-label" for="">@TenantResource.AccountProviderBank</label>
+                                    <select class="form-control" id="AccountProviderBank" name="ProviderNameBank">
+                                        @foreach (var bank in BankCode.Item.GetCodeList())
+                                        {
+                                            <option value="@bank.Value">@bank.Description</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-2 panel-wallet" style="display:none;">
+                                    <label class="form-label" for="" id="label-po">@TenantResource.AccountProviderWallet</label>
+                                    <select class="form-control" id="AccountProviderWallet" name="ProviderNameWallet">
+                                        @foreach (var wallet in WalletCode.Item.GetCodeList())
+                                        {
+                                            <option value="@wallet.Value">@wallet.Description</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-2 panel-account">
+                                    <label class="form-label">@TenantResource.AccountName</label>
+                                    <input class="form-control" maxlength="256" id="AccountName" name="AccountName">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-2 panel-bank">
+                                    <label class="form-label">@TenantResource.AccountNumberBank</label>
+                                    <input class="form-control" maxlength="256" id="AccountNumberBank" name="AccountNumberBank">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-2 panel-wallet" style="display:none;">
+                                    <label class="form-label">@TenantResource.AccountNumberWallet</label>
+                                    <input class="form-control" maxlength="256" id="AccountNumberWallet" name="AccountNumberWallet">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-2 panel-payment-gateway" style="display:none;">
+                                    <label class="form-label" for="" id="label-po">@TenantResource.PaymentGatewayProvider</label>
+                                    <select class="form-control" id="ProviderNamePaymentGateway" name="ProviderNamePaymentGateway">
+                                        @foreach (var gateway in PaymentGatewayCode.Item.GetCodeList())
+                                        {
+                                            <option value="@gateway.Value">@gateway.Description</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-2 panel-payment-gateway-api-key" style="display:none;">
+                                    <label class="form-label">@TenantResource.PaymentGatewayProviderApiKey</label>
+                                    <input class="form-control" maxlength="256" id="PaymentGatewayProviderApiKey" name="PaymentGatewayProviderApiKey">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-2 panel-payment-gateway-webhook-secret" style="display:none;">
+                                    <label class="form-label">@TenantResource.PaymentGatewayProviderWebHookSecret</label>
+                                    <input class="form-control" maxlength="256" id="PaymentGatewayProviderWebHookSecret" name="PaymentGatewayProviderWebHookSecret">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-2 panel-payment-gateway-active-duration" style="display:none;">
+                                    <label class="form-label">@TenantResource.PaymentGatewayMinuteDuration</label>
+                                    <input type="number" value="0" class="form-control" maxlength="8" id="PaymentGatewayMinuteDuration" name="PaymentGatewayMinuteDuration">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary btn-submit-payment"><i class="fa fa-save"></i> @GeneralResource.General_Submit</button>
+                        <button class="btn btn-link btn-close-payment" data-dismiss="modal"><i class="fa fa-remove"></i> @GeneralResource.General_Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

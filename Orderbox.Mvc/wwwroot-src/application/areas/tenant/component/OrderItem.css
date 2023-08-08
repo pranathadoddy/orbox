@@ -1,0 +1,152 @@
+﻿.order-item {
+    padding: 0;
+    border: 1px solid #DEDEDE;
+    background-color: #FFFFFF;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+    .order-item.list-item .list-item__center {
+        background-image: unset;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .order-item .order-item__info {
+        display: flex;
+        flex: 7;
+        width: 100%;
+        height: 120px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+        .order-item .order-item__info .order-item__left {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            border-radius: 3px;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+            .order-item .order-item__info .order-item__left .discount {
+                display: block;
+                background: #FF5252;
+                color: white;
+                padding: 7px;
+                position: absolute;
+                top: -10px;
+                left: -10px;
+                font-size: .85rem;
+                border-top-left-radius: 3px;
+            }
+
+        .order-item .order-item__info .order-item__right {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            padding: 0 5px 0 10px;
+            height: 100%;
+        }
+
+            .order-item .order-item__info .order-item__right .order-item__title {
+                font-size: .9em;
+                flex: 1;
+                display: flex;
+                align-items: flex-start;
+            }
+
+            .order-item .order-item__info .order-item__right .order-item__price {
+                flex: 1;
+                font-size: .85em;
+                color: #F37021;
+                display: flex;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+                .order-item .order-item__info .order-item__right .order-item__price .order-item__old-price-container {
+                    flex: 1;
+                }
+
+                .order-item .order-item__info .order-item__right .order-item__price .old-price {
+                    text-decoration: line-through;
+                }
+
+                .order-item .order-item__info .order-item__right .order-item__price .order-item__discounted-price-container {
+                    flex: 1;
+                }
+
+            .order-item .order-item__info .order-item__right .order-item__qty {
+                flex: 1;
+                display: flex;
+                align-items: flex-end;
+                justify-content: flex-end;
+            }
+
+                .order-item .order-item__info .order-item__right .order-item__qty .label {
+                    font-size: .85em;
+                    letter-spacing: 1px;
+                    padding-left: 10px;
+                }
+
+                .order-item .order-item__info .order-item__right .order-item__qty .button--material {
+                    padding: 2px 4px;
+                    line-height: unset;
+                    min-height: unset;
+                    font-weight: 300;
+                    text-transform: capitalize;
+                    box-shadow: unset;
+                    letter-spacing: .5px;
+                    border-radius: 2px;
+                    background-color: #F37021;
+                    font-size: 12px;
+                    -webkit-font-smoothing: none;
+                }
+
+    .order-item .order-item__total {
+        flex: 1;
+        display: flex;
+        background-color: #F37021;
+        width: 100%;
+        font-size: .85em;
+        padding: 3px 17px;
+        box-sizing: border-box;
+        border-radius: 0 0 5px 5px;
+        color: #FFFFFF;
+    }
+
+        .order-item .order-item__total .order-item__left {
+            display: flex;
+            flex: 1;
+        }
+
+        .order-item .order-item__total .order-item__right {
+            display: flex;
+            flex: 1;
+            align-items: flex-end;
+            justify-content: flex-end;
+        }
+.order-item__notes {
+    flex: 1;
+    justify-content: flex-end;
+    align-items: flex-end;
+    display: flex;
+}
+    .order-item__notes .order-item__notes-button {
+        font-size: 1.1em;
+        display: inline-block;
+    }
+
+@media only screen and (min-width: 640px) {
+    .order-item .order-item__info {
+        height: 140px;
+    }
+}

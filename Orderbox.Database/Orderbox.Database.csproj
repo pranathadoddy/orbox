@@ -1,0 +1,79 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Scripts\Script00250 - Alter table com_Product.sql" />
+    <None Remove="Scripts\Script00260 - Alter table com_OrderItem.sql" />
+    <None Remove="Scripts\Script00270 - Create Table vch_Voucher.sql" />
+    <None Remove="Scripts\Script00280 - Create Table vch_UserVoucher.sql" />
+    <None Remove="Scripts\Script00290 - Alter table com_OrderItem.sql" />
+    <None Remove="Scripts\Script00300 - Alter table vch_Voucher.sql" />
+    <None Remove="Scripts\Script00310 - Rename table com_Order to trx_Order.sql" />
+    <None Remove="Scripts\Script00320 - Rename table com_OrderItem to trx_OrderItem.sql" />
+    <None Remove="Scripts\Script00330 - Rename table com_OrderAdditionalCharge to trx_OrderAdditionalCharge.sql" />
+    <None Remove="Scripts\Script00340 - Alter table vch_Voucher.sql" />
+    <None Remove="Scripts\Script00350 - Alter table trx_OrderItem.sql" />
+  </ItemGroup>
+
+	<ItemGroup>
+    <EmbeddedResource Include="Scripts\Script00010 - Create table com_Customer.sql" />
+    <EmbeddedResource Include="Scripts\Script00350 - Alter table trx_OrderItem.sql" />
+    <EmbeddedResource Include="Scripts\Script00340 - Alter table vch_Voucher.sql" />
+    <EmbeddedResource Include="Scripts\Script00330 - Rename table com_OrderAdditionalCharge to trx_OrderAdditionalCharge.sql" />
+    <EmbeddedResource Include="Scripts\Script00320 - Rename table com_OrderItem to trx_OrderItem.sql" />
+    <EmbeddedResource Include="Scripts\Script00310 - Rename table com_Order to trx_Order.sql" />
+    <EmbeddedResource Include="Scripts\Script00300 - Alter table vch_Voucher.sql" />
+    <EmbeddedResource Include="Scripts\Script00290 - Alter table com_OrderItem.sql" />
+    <EmbeddedResource Include="Scripts\Script00280 - Create Table vch_UserVoucher.sql" />
+    <EmbeddedResource Include="Scripts\Script00270 - Create Table vch_Voucher.sql" />
+    <EmbeddedResource Include="Scripts\Script00260 - Alter table com_OrderItem.sql" />
+    <EmbeddedResource Include="Scripts\Script00250 - Alter table com_Product.sql" />
+    <EmbeddedResource Include="Scripts\Script00220 - Alter table com_Order.sql" />
+    <EmbeddedResource Include="Scripts\Script00200 - Alter table com_Order.sql" />
+    <EmbeddedResource Include="Scripts\Script00020 - Alter table com_Order.sql" />
+    <EmbeddedResource Include="Scripts\Script00022 - Create table com_Agent.sql" />
+    <EmbeddedResource Include="Scripts\Script00021 - Create table com_Agency.sql" />
+    <EmbeddedResource Include="Scripts\Script00160 - Alter sproc rpt_usp_GetDailyRevenueChart.sql" />
+    <EmbeddedResource Include="Scripts\Script00190 - Alter table com_Customer.sql" />
+    <EmbeddedResource Include="Scripts\Script00180 - Alter table com_Tenant.sql" />
+    <EmbeddedResource Include="Scripts\Script00210 - Alter table com_Product.sql" />
+    <EmbeddedResource Include="Scripts\Script00170 - Alter table loc_Country.sql" />
+    <EmbeddedResource Include="Scripts\Script00150 - Alter table com_Tenant.sql" />
+    <EmbeddedResource Include="Scripts\Script00120 - Alter table com_Payment.sql" />
+    <EmbeddedResource Include="Scripts\Script00140 - Set all tenant shop enabled.sql" />
+    <EmbeddedResource Include="Scripts\Script00130 - Alter table com_Agent.sql" />
+    <EmbeddedResource Include="Scripts\Script00090 - Create table loc_City.sql" />
+    <EmbeddedResource Include="Scripts\Script00080 - Create table loc_Country.sql" />
+    <EmbeddedResource Include="Scripts\Script00110 - Create table com_ProductStore.sql" />
+    <EmbeddedResource Include="Scripts\Script00100 - Create table loc_Store.sql" />
+    <EmbeddedResource Include="Scripts\Script00050 - Create table com_ProductSubCategory.sql" />
+    <EmbeddedResource Include="Scripts\Script00040 - Create table com_SubCategory.sql" />
+    <EmbeddedResource Include="Scripts\Script00070 - Alter table com_Product.sql" />
+    <EmbeddedResource Include="Scripts\Script00030 - Alter table com_Tenant.sql" />
+    <EmbeddedResource Include="Scripts\Script00230 - Create Table com_AgencyCategory.sql" />
+    <EmbeddedResource Include="Scripts\Script00240 - Create Table com_ProductAgencyCategory.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+    <PackageReference Include="MySql.Data" Version="8.0.29" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="dbup-core" Version="4.6.3" />
+    <PackageReference Include="dbup-mysql" Version="4.6.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="dbup.appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="dbup.appsettings.Staging.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="dbup.appsettings.Production.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

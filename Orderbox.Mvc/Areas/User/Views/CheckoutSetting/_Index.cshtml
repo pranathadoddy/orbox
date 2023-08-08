@@ -1,0 +1,114 @@
+﻿@using Framework.Core.Resources
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@model Orderbox.Mvc.Areas.User.Models.CheckoutSetting.IndexModel
+@{
+    ViewData["Title"] = "Checkout Setting";
+    Layout = $"{this.User.Identity.GetRole()}Layout/_Layout";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <h2 class="page-title">
+                        Checkout Setting
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cards">
+            <div class="col-lg-12">
+                <div class="card">
+                    @using (Html.BeginForm("", "", FormMethod.Post, new
+                    {
+                        id = "form-checkout-setting",
+                        action = "/User/CheckoutSetting/Update"
+                    }))
+                    {
+                        <div class="card-header"><h3>Setting</h3></div>
+                        <div class="card-body">
+                            @Html.SimpleDivPlaceholder("errorpane")
+                            @Html.SwitcherFor(model => model.CustomerMustLogin)
+                            <div id="GoogleOAuthClientId-container" class="d-none">
+                                @Html.TextEditorFor(model => model.GoogleOAuthClientId, "mt-4")
+                            </div>
+                            @Html.DropDownFor(model => model.CheckoutForm, Model.CheckoutForms, "mt-4")
+                        </div>
+                        <div class="card-footer">
+                            @Html.ButtonWithLabel(
+                              string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_Save),
+                              buttonType: PresentationConstant.ButtonType.Submit,
+                              id: "btn-save",
+                              cssClass: "btn-primary")
+                        </div>
+                    }
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><h3>Metode Pembayaran</h3></div>
+                    <div class="card-body">
+                        <ul class="list-unstyled list-separated" id="paymentGroup">
+                            @foreach (var payment in Model.PaymentDtos)
+                            {
+                                var deleteUrl = "/User/Payment/Delete?Id=" + payment.Id;
+
+                                <li class="list-separated-item">
+                                    <form data-delete-url="@deleteUrl"
+                                          data-delete-confirmation-message="Pesan Konfirmasi"
+                                          data-delete-warning="Lanjutkan menghapus data?"
+                                          data-custom-delete-yes-button="Ya">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="avatar avatar-md d-block">@payment.PaymentOptionCode[0]</span>
+                                            </div>
+                                            <div class="col">
+                                                <div>
+                                                    @if (payment.PaymentOptionCode == "COD")
+                                                    {
+                                                        <a href="javascript:void(0)" class="text-inherit">Bayar di Tempat (COD)</a>
+                                                    }
+                                                    else if(payment.PaymentOptionCode == "PMGW")
+                                                    {
+                                                        <a href="javascript:void(0)" class="text-inherit">@String.Format("{0}", payment.ProviderName)</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="javascript:void(0)" class="text-inherit">@String.Format("{0} - {1}", payment.ProviderName, payment.AccountName)</a>
+                                                    }
+                                                </div>
+                                                @if (payment.PaymentOptionCode != "COD")
+                                                {
+                                                    <small class="d-block item-except text-sm text-muted h-1x">@payment.AccountNumber</small>
+                                                }
+                                            </div>
+                                            <div class="col-auto">
+                                                <button class="btn btn-danger btn-remove-payment"><i class="fa fa-1x fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary btn-add-payment"><i class="fa fa-plus mr-2"></i> @GeneralResource.General_Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@{ await Html.RenderPartialAsync("_PaymentPanel"); }
+
+@section scripts {
+    <script type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new CheckoutSettingIndex.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

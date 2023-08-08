@@ -1,0 +1,63 @@
+﻿@using Framework.Core.Resources
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@using Microsoft.Extensions.Configuration
+@{
+    ViewData["Title"] = "Website Management";
+    Layout = $"{this.User.Identity.GetRole()}Layout/_Layout";
+}
+@inject IConfiguration Configuration
+@model Orderbox.Mvc.Areas.User.Models.Category.CreateModel
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        Create
+                    </div>
+                    <h2 class="page-title">
+                        Kategori
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row row-deck">
+            <div class="col-12">
+                <div class="card">
+                    @using (Html.BeginForm("Create", "Category", FormMethod.Post))
+                    {
+                    <div class="card-body">
+                        @Html.TextEditorFor(model => model.Name, "mb-2")
+                        @Html.MultilineTextEditorFor(model => model.Description, "mb-2")
+                    </div>
+                        <div class="card-footer">
+                            @Html.ButtonWithLabel(
+                                string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_Save),
+                                buttonType: PresentationConstant.ButtonType.Submit,
+                                id: "btn-save",
+                                cssClass: "btn-primary")
+                            @Html.LinkButtonWithLabel(
+                                string.Format("<i class='fa fa-remove mr-1'></i> {0}", GeneralResource.General_Cancel),
+                                id: "link-cancel",
+                                cssClass: "btn-link",
+                                href: "/User/Category/Index")
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new CategoryCreate.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

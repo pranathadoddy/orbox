@@ -1,0 +1,5 @@
+﻿{
+  "ConnectionStrings": {
+    "DefaultConnection": "server=a50-mysql-do-user-223291-0.db.ondigitalocean.com;port=25060;user=orderbox-prod-user;password=v82nz8o4xo7meo4q;database=orderbox-prod;allow user variables=true"
+  }
+}

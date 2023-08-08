@@ -1,0 +1,25 @@
+﻿@using Framework.Application.Presentation
+@using Framework.Core.Resources
+@using Framework.Application.Presentation.HtmlHelperExtensions
+
+<div class="modal fade" id="icon-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="m-0">Upload Icon</h2>
+            </div>
+            <div class="modal-body croppie-container">
+                <input type="hidden" name="IconName" id="IconName">
+                <div id="icon-croppie"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@GeneralResource.General_Close</button>
+                @Html.ButtonWithLabel(GeneralResource.General_Save,
+                      buttonType: PresentationConstant.ButtonType.Button,
+                      id: "btn-upload",
+                      cssClass: "btn-primary")
+            </div>
+        </div>
+    </div>
+</div>
+

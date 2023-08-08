@@ -1,0 +1,17 @@
+﻿@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Core.Resources.Common
+@model Orderbox.Mvc.Areas.User.Models.Report.IndexModel
+
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title text-uppercase">@ReportResource.PopularProduct</h3>
+        </div>
+        <div class="card-body"
+             data-url="/User/Report/GetPopularProductChart"
+             doughnut-chart>
+            @Html.SimpleDivPlaceholder("spinnerpane")
+            @Html.SimpleDivPlaceholder("chart-container")
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿@using Orderbox.Core
+@using Framework.Core.Resources
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@using Orderbox.Core.Resources.Common
+@model Orderbox.Mvc.Areas.User.Models.Store.IndexModel
+
+@{
+    ViewData["Title"] = "Store Management";
+    Layout = $"{this.User.Identity.GetRole()}Layout/_Layout";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        List
+                    </div>
+                    <h2 class="page-title">
+                        Store
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row row-deck">
+            <div class="col-12">
+                <div class="card">
+                    <table grid
+                           class="table table-striped table-hover bootgrid-table"
+                           data-url="/User/Store/PagedSearchGridJson"
+                           data-edit-url="/User/Store/Edit">
+                        <thead>
+                            <tr>
+                                <th data-column-id="id" data-formatter="Edit" data-header-css-class="w-7"></th>
+                                <th data-column-id="name">@LocationResource.Name</th>
+                                <th data-column-id="address">@LocationResource.Address</th>
+                                <th data-column-id="mapUrl">@LocationResource.MapUrl</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="card-footer">
+                        @Html.LinkButtonWithLabel(
+                             string.Format("<i class='fa fa-plus'></i> {0}", GeneralResource.General_Add),
+                             id: "link-add",
+                             cssClass: "btn-primary",
+                             href: "/User/Store/Create"
+                         )
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new StoreIndex.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

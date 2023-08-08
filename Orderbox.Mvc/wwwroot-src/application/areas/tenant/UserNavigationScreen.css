@@ -1,0 +1,15 @@
+﻿.user-navigation-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.user-navigation-header img {
+    border-radius: 50%;
+}
+
+.user-navigation-header h5 {
+    margin-bottom: unset;
+}

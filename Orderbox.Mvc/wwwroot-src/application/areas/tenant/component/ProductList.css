@@ -1,0 +1,21 @@
+﻿.product {
+    padding: 10px;
+}
+
+    .product .list {
+        background-color: transparent;
+        background-image: unset;
+    }
+
+.product .loader {
+    position: relative;
+    height: 60px;
+}
+
+.product .loader .loading-shading {
+    background: transparent;
+}
+
+.fixed-header .product {
+    margin-top: 110px;
+}

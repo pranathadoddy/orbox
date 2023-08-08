@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: orbox.id-cert
+  namespace: orderbox
+spec:
+  secretName: orbox.id-cert-secret
+  issuerRef:
+    kind: Issuer
+    name: orbox.id-cert-issuer
+  dnsNames:
+  - orbox.id
+  - '*.orbox.id'

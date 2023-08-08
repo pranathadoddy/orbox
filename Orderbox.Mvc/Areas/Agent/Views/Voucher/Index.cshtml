@@ -1,0 +1,72 @@
+﻿@using Framework.Core.Resources
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Core.Resources.Common
+@model Orderbox.Mvc.Areas.Agent.Models.Voucher.IndexModel
+@{
+    ViewData["Title"] = "Voucher";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="page-pretitle">
+                        Edit Merchant
+                    </div>
+                    <h2 class="page-title">
+                        @Model.MerchantName
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-2 mb-5">
+                @{ await Html.RenderPartialAsync("../_SideNavigation", Model.SideNavigation); }
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-10">
+                <div class="row row-deck">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Voucher</h3>
+                            </div>
+                            <table grid
+                                   class="table table-striped table-hover bootgrid-table"
+                                   data-url="/Agent/Voucher/PagedSearchGridJson"
+                                   data-search-category-url="/Agent/Category/PagedSearchGridJson"
+                                   data-filters="tenantId=@Model.SideNavigation.MerchantId"
+                                   data-edit-url="/Agent/Voucher/Edit/@Model.SideNavigation.MerchantId"
+                                   id="voucher">
+                                <thead>
+                                    <tr>
+                                        <th data-column-id="id" data-formatter="Edit" data-header-css-class="w-7"></th>
+                                        <th data-column-id="name">@ProductResource.Voucher</th>
+                                        <th data-column-id="price" data-formatter="Price">@ProductResource.Price (@Model.Currency)</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="card-footer">
+                                @Html.LinkButtonWithLabel(
+                                     string.Format("<i class='fa fa-plus'></i> {0}", GeneralResource.General_Add),
+                                     id: "link-add",
+                                     cssClass: "btn-primary",
+                                     href: $"/Agent/Voucher/Create/{Model.SideNavigation.MerchantId}"
+                                 )
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AgentVoucherIndex.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

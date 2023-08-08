@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Configurations>Debug;Release;Staging</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.19" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Framework.Core\Framework.Core.csproj" />
+    <ProjectReference Include="..\Framework.Dto\Framework.Dto.csproj" />
+    <ProjectReference Include="..\Framework.RepositoryContract\Framework.RepositoryContract.csproj" />
+  </ItemGroup>
+
+</Project>

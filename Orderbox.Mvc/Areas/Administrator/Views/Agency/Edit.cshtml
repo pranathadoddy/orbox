@@ -1,0 +1,126 @@
+﻿@using Framework.Core.Resources
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@using Microsoft.Extensions.Configuration
+@using Orderbox.Core.Resources.Common
+@using Orderbox.Core
+@{
+    ViewData["Title"] = "Deals Agency";
+    Layout = $"{this.User.Identity.GetRole()}Layout/_Layout";
+}
+@inject IConfiguration Configuration
+@model Orderbox.Mvc.Areas.Administrator.Models.Agency.EditModel
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        Edit
+                    </div>
+                    <h2 class="page-title">
+                        Deals Agency
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                @using (Html.BeginForm("Edit", "Agency", FormMethod.Post, new
+            {
+                area = "Administrator",
+                data_delete_url = $"/Administrator/Agency/Delete/{Model.Id}",
+                data_delete_confirmation_message = GeneralResource.General_Confirm,
+                data_delete_warning = GeneralResource.General_DeleteWarning,
+                data_custom_delete_yes_button = GeneralResource.General_YesDeleteIt
+            }))
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Deals Agency Detail</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    @Html.TextEditorFor(model => model.Name, "mb-2")
+                                    @Html.MultilineTextEditorFor(model => model.Description, "mb-2", maxLength:PresentationConstant.TextInputAttribute.LargeTextMaxLength)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @Html.ButtonWithLabel(
+                                string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_Update),
+                                buttonType: PresentationConstant.ButtonType.Submit,
+                                id: "btn-save",
+                                cssClass: "btn-primary")
+                            @Html.ButtonWithLabel(
+                                string.Format("<i class='fa fa-trash mr-1'></i> {0}", GeneralResource.General_Delete),
+                                buttonType: PresentationConstant.ButtonType.Button,
+                                id: "btn-delete",
+                                cssClass: "btn-danger")
+                            @Html.LinkButtonWithLabel(
+                                string.Format("<i class='fa fa-remove mr-1'></i> {0}", GeneralResource.General_Cancel),
+                                id: "link-cancel",
+                                cssClass: "btn-link",
+                                href: "/Administrator/Agency")
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        List
+                    </div>
+                    <h2 class="page-title">
+                        Agent
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row row-deck">
+            <div class="col-12">
+                <div class="card">
+                    <table grid
+                           class="table table-striped table-hover bootgrid-table"
+                           data-url="/Administrator/Agent/PagedSearchGridJson/@Model.Id"
+                           data-edit-url="/Administrator/Agent/Edit"
+                           id="agent">
+                        <thead>
+                            <tr>
+                                <th data-column-id="id" data-formatter="Edit" data-header-css-class="w-7"></th>
+                                <th data-column-id="email">@AgentResource.Email</th>
+                                <th data-column-id="privilege">@AgentResource.Privilege</th>
+                                <th data-column-id="status">@AgentResource.Status</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="card-footer">
+                        @Html.LinkButtonWithLabel(
+                             string.Format("<i class='fa fa-plus'></i> {0}", GeneralResource.General_Add),
+                             id: "link-add",
+                             cssClass: "btn-primary",
+                             href: $"/Administrator/Agent/Create/{Model.Id}"
+                         )
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AgencyEdit.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

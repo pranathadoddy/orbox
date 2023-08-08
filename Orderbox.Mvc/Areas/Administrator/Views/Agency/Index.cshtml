@@ -1,0 +1,62 @@
+﻿@using Framework.Core.Resources
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@using Orderbox.Core.Resources.Common
+@model Orderbox.Mvc.Areas.User.Models.Product.IndexModel
+@{
+    ViewData["Title"] = "Deals Agency";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        List
+                    </div>
+                    <h2 class="page-title">
+                        Deals Agency
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row row-deck">
+            <div class="col-12">
+                <div class="card">
+                    <table grid
+                           class="table table-striped table-hover bootgrid-table"
+                           data-url="/Administrator/Agency/PagedSearchGridJson"
+                           data-edit-url="/Administrator/Agency/Edit"
+                           id="dealsagency">
+                        <thead>
+                            <tr>
+                                <th data-column-id="id" data-formatter="Edit" data-header-css-class="w-7"></th>
+                                <th data-column-id="name">@AgencyResource.Name</th>
+                                <th data-column-id="description">@AgencyResource.Description</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="card-footer">
+                        @Html.LinkButtonWithLabel(
+                             string.Format("<i class='fa fa-plus'></i> {0}", GeneralResource.General_Add),
+                             id: "link-add",
+                             cssClass: "btn-primary",
+                             href: "/Administrator/Agency/Create"
+                         )
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AgencyIndex.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

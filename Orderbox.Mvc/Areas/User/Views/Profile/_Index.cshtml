@@ -1,0 +1,192 @@
+﻿@using Orderbox.Core
+@using Framework.Core.Resources
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@using Orderbox.Core.Resources.Common
+@using Orderbox.Core.Resources.Account
+@model Orderbox.Mvc.Areas.User.Models.Profile.IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    Layout = $"{this.User.Identity.GetRole()}Layout/_Layout";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <h2 class="page-title">
+                        Profil Usaha
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cards">
+            <div class="col-lg-4">
+                @using (Html.BeginForm("", "", FormMethod.Post, new
+                {
+                    id = "form-logo",
+                    action = "/User/Profile/UploadLogo"
+                }))
+                {
+                    var logoUrl = String.IsNullOrEmpty(Model.LogoUrl) ?
+                        CoreConstant.Tenant.DefaultLogo :
+                        Model.LogoUrl;
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row logo-wrapper m-0 mb-4">
+                                <div class="col-sm-12 col-lg-12 text-center">
+                                    <span class="profile-logo" style="background-image:url('@logoUrl')"></span>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-upload">
+                                <div class="form-label">Upload Logo Usaha</div>
+                                <div class="form-file">
+                                    <input type="file" class="form-file-input" id="Logo" name="Logo">
+                                    <label class="form-file-label" for="customFile">
+                                        <span class="form-file-button">Pilih File</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @using (Html.BeginForm("", "", FormMethod.Post, new
+                {
+                    id = "form-wallpaper",
+                    action = "/User/Profile/UploadWallpaper",
+                    data_delete_url = "/User/Profile/UnsetWallpaper",
+                    data_delete_confirmation_message = ProfileResource.DeleteWallpaperConfirmationMessage,
+                    data_delete_warning = ProfileResource.WallpaperDeleteWarning,
+                    data_custom_delete_yes_button = GeneralResource.General_YesDeleteIt
+                }))
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row m-0 mb-4">
+                                <div class="col-sm-12 col-lg-12 text-right @(string.IsNullOrEmpty(Model.WallpaperUrl) ? "d-none" : "")">
+                                    <span class="profile-wallpaper" @(string.IsNullOrEmpty(Model.WallpaperUrl) ? "" : $"style=background-image:url('{@Model.WallpaperUrl}')")></span>
+                                    <a href="#" class="btn btn-sm btn-danger" btn-unset-wallpapper><i class="fa fa-trash mr-2"></i>Unset</a>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-upload">
+                                <div class="form-label">Upload Background</div>
+                                <div class="form-file">
+                                    <input type="file" class="form-file-input" id="Wallpaper" name="Wallpaper">
+                                    <label class="form-file-label" for="customFile">
+                                        <span class="form-file-button">Pilih File</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card">
+                    @using (Html.BeginForm("", "", FormMethod.Post, new
+                    {
+                        id = "form-profile",
+                        action = "/User/Profile/UpdateProfile"
+                    }))
+                    {
+                        <div class="card-header"><h3>Profil Usaha</h3></div>
+                        <div class="card-body">
+                            @Html.SimpleDivPlaceholder("errorpane")
+                            @Html.TextEditorFor(model => model.BusinessName, "mb-2")
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    @Html.TextEditorFor(model => model.FirstName, "mb-2")
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    @Html.TextEditorFor(model => model.LastName, "mb-2")
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    @Html.DropDownFor(model => model.CountryId, Model.Countries, "mb-2")
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group mb-2">
+                                        <label class="form-label">@TenantResource.Phone</label>
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <span class="input-group-text area-code">@Model.AreaCode</span>
+                                            </span>
+                                            @Html.HiddenFor(model => model.AreaCode)
+                                            @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @type = "number" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @Html.MultilineTextEditorFor(model => model.Address, "mb-2")
+                            @Html.MultilineTextEditorFor(model => model.AdditionalInformation, "mb-2")
+                        </div>
+                        <div class="card-footer">
+                            @Html.ButtonWithLabel(
+                              string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_Save),
+                              buttonType: PresentationConstant.ButtonType.Submit,
+                              id: "btn-save",
+                              cssClass: "btn-primary")
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal fade" id="logo-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="m-0">Upload Logo</h2>
+            </div>
+            <div class="modal-body croppie-container">
+                <input type="hidden" name="LogoName">
+                <div id="logo-croppie"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@GeneralResource.General_Close</button>
+                @Html.ButtonWithLabel(GeneralResource.General_Save,
+                      buttonType: PresentationConstant.ButtonType.Button,
+                      id: "btn-upload",
+                      cssClass: "btn-primary")
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="wallpaper-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="m-0">Upload Wallpaper</h2>
+            </div>
+            <div class="modal-body croppie-container">
+                <input type="hidden" name="WallpaperName">
+                <div id="wallpaper-croppie"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@GeneralResource.General_Close</button>
+                @Html.ButtonWithLabel(GeneralResource.General_Save,
+                      buttonType: PresentationConstant.ButtonType.Button,
+                      id: "btn-upload-wallpaper",
+                      cssClass: "btn-primary")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new ProfileIndex.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

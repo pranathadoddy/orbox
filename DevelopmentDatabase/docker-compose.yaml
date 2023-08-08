@@ -1,0 +1,23 @@
+version: '3.3'
+services: 
+   db:
+      container_name: orbox-mysql
+      image: mysql:8
+      volumes:
+         - orbox_data:/var/lib/mysql
+      restart: always
+      ports:
+         - "3306:3306"
+      environment:
+         MYSQL_ROOT_PASSWORD: temp123
+      entrypoint:
+        sh -c "
+          echo '
+            CREATE DATABASE IF NOT EXISTS `orderbox-local`;
+            CREATE USER `orderbox-local`@`%` IDENTIFIED BY '\''temp123'\'';
+            GRANT ALL PRIVILEGES ON `orderbox-local`.* TO `orderbox-local`@`%`;
+          ' > /docker-entrypoint-initdb.d/init.sql;
+          /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+        "
+volumes:
+   orbox_data:

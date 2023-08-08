@@ -1,0 +1,240 @@
+﻿@{
+    Layout = "_PlainLayout";
+}
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Framework.Core.Resources
+@using Orderbox.Core
+@model Orderbox.Mvc.Models.Voucher.IndexModel
+
+<div page class="container max-w-576">
+    <div class="row">
+        <div class="col-12 mb-0 p-0 pt-5" style="background-color:beige">
+            <div class="header-brand d-flex justify-content-center flex-column mb-5">
+                <img src="https://cdn.orbox.id/obox/assets/img/logo.png" class="header-brand-img align-self-center" alt="Logo">
+                <span class="align-self-center text-uppercase mt-2 text-primary font-weight-bold" style="letter-spacing: 2px;">Orderbox</span>
+            </div>
+            <div style="width:90%; margin: 0 auto;">
+                @if (Model.Status == CoreConstant.VoucherStatus.Used)
+                {
+                    <div class="alert alert-primary text-center">
+                        Selamat, voucher anda telah berhasil ditukarkan.
+                    </div>
+                }
+                else
+                {
+                    if (!Model.IsValid)
+                    {
+                        <div class="alert alert-danger text-center">
+                            Voucher ini sudah tidak berlaku lagi.
+                        </div>
+                    }
+                }
+                <div class="card w-100">
+                    <div class="card-header justify-content-center text-center">
+                        @Model.Name
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="row m-0">
+                            <div class="col-6 p-2 text-center text-uppercase border-bottom">
+                                <span>Redeem Code</span>
+                                <strong class="d-block">@Model.VoucherCode</strong>
+                            </div>
+                            <div class="col-6 p-2 text-center text-uppercase border-left border-bottom">
+                                <span>Quantity</span>
+                                <strong class="d-block">@Model.Quantity</strong>
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-12 p-2 text-center text-uppercase">
+                                @if (Model.IsValid)
+                                {
+                                    @if (Model.RedeemMethod == CoreConstant.RedeemMethod.Swipe)
+                                    {
+                                        if (Model.Status == CoreConstant.VoucherStatus.Valid)
+                                        {
+                                            <div id="slide-to-redeem" data-url="@Url.Action("Redeem", "Voucher")" data-code="@Model.Code"></div>
+                                        }
+                                        else
+                                        {
+                                            <p class="mb-0 py-3">Telah ditukarkan pada <span class="d-block strong">@Model.RedeemDate.ToString(CoreConstant.DateSetting.HumanReadableLongDateFormat) (UTC)</span</p>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p class="mb-0 py-3">Tukarkan langsung pada merchant</p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="mb-0 py-3">Voucher expired</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-6 text-left">
+                                <a href="#" id="howtoredeem"><i class="fa fa-sign-out"></i> How to redeem?</a>
+                            </div>
+                            <div class="col-6 text-right">
+                                <a href="https://squareble.com/pricing-id" target="_blank"><i class="fa fa-question"></i> Get Help</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-0 p-0">
+            <div class="card mb-0" style="border-radius: unset;">
+                <div class="card-body">
+                    <p>Voucher valid dari <span class="strong">@Model.ValidStartDate.ToString(CoreConstant.DateSetting.HumanReadableShortDateFormat) (UTC)</span> hingga <span class="strong">@Model.ValidEndDate.ToString(CoreConstant.DateSetting.HumanReadableShortDateFormat) (UTC)</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-0 p-0 pt-2">
+            <div class="card mb-0" style="border-radius: unset;">
+                <div class="card-header">
+                    <span class="strong">Lokasi penukaran kupon</span>
+                </div>
+                <div class="card-body">
+                    @if(Model.Status == CoreConstant.VoucherStatus.Valid)
+                    {
+                        <p class="mb-0">Redeemable at @Model.StoreLocations.Count locations</p>
+                        <a href="#" btn-view-location>View locations</a>
+                    }
+                    else {
+                        var redeemLocation = @Model.StoreLocations.Find(item => item.Id == Model.StoreLocationId);
+                        <span class="strong">@redeemLocation.Name</span>
+                        <p>@redeemLocation.Address, @redeemLocation.CityName, @redeemLocation.CountryName</p>
+                    }
+                </div>
+                @if(Model.Status == CoreConstant.VoucherStatus.Used)
+                {
+                    <div class="card-footer">
+                        <p class="mb-0">Also redeemable at @(Model.StoreLocations.Count-1) other locations</p>
+                        <a href="#" btn-view-location>View other locations</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-5 p-0 pt-2">
+            <div class="card mb-0" style="border-radius: unset;">
+                <div class="card-header">
+                    <span class="strong">Fine Print</span>
+                </div>
+                <div class="card-body">
+                    @Html.Raw(Model.TermAndCondition)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="redeem-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="m-0">Redeem</h2>
+            </div>
+            <div class="modal-body">
+                @Html.DropDownFor(model => model.StoreLocationId, Model.StoreLocationSelectList)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@GeneralResource.General_Close</button>
+                @Html.ButtonWithLabel("Redeem",
+                buttonType: PresentationConstant.ButtonType.Button,
+                id: "btn-redeem",
+                cssClass: "btn-primary")
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="howtoredeem-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="m-0">Petunjuk Melakukan Redeem</h2>
+            </div>
+            <div class="modal-body">
+                @if (Model.RedeemMethod == CoreConstant.RedeemMethod.Swipe)
+                {
+                    <h3>Customer</h3>
+                    <p>Tunjukkan voucher ini kepada merchant</p>
+
+                    <h3>Merchant</h3>
+                    <ol>
+                        <li>
+                            Geser ke kanan pada tampilan ini :
+                            <img src="https://cdn.orbox.id/obox/assets/img/slide-to-redeem.jpg" alt="Redeem image" />
+                        </li>
+                        <li>Pada popup yang muncul setelah menggeser slider diatas, pilih <span class="strong">Toko</span> dimana kupon ini ditukarkan.</li>
+                        <li>Tekan tombol <span class="strong">Cancel</span> untuk membatalkan.</li>
+                        <li>Tekan tombol <span class="strong">Redeem</span> untuk memproses penukaran kupon.</li>
+                    </ol>
+                }
+                else
+                {
+                    <h3>Customer</h3>
+                    <p>Tunjukkan voucher ini kepada merchant</p>
+
+                    <h3>Merchant</h3>
+                    <ol>
+                        <li>Login ke backend management dashboard</li>
+                        <li>Pilih menu redeem</li>
+                        <li>Masukkan code voucher pada form yang telah disediakan</li>
+                        <li>Tekan tombol continue</li>
+                        <li>Setelah muncul tampilan voucher, tekan tombol <span class="strong">Redeem</span></li>
+                    </ol>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@GeneralResource.General_Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="stores-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="m-0">Available Store</h2>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    @foreach(var storeLocation in Model.StoreLocations)
+                    {
+                        if(storeLocation.Id == Model.StoreLocationId)
+                        {
+                            continue;
+                        }
+                        <a href="@storeLocation.MapUrl" class="list-group-item list-group-item-action list-group-item-primary" target="_blank">
+                            <span class="strong">@storeLocation.Name</span>
+                            <p>@storeLocation.Address, @storeLocation.CityName, @storeLocation.CountryName</p>
+                        </a>   
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@GeneralResource.General_Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script defer type="text/javascript">
+    window.addEventListener('load', function () {
+        var page = new VoucherIndex.default($('[page]'));
+        page.register();
+    });
+</script>
+}

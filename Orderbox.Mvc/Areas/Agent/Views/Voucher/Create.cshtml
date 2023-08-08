@@ -1,0 +1,116 @@
+﻿@using Framework.Application.Presentation
+@using Framework.Core.Resources
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@model Orderbox.Mvc.Areas.Agent.Models.Voucher.CreateModel
+@{
+    ViewData["Title"] = "Voucher";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <div class="page-pretitle">
+                        Edit Merchant
+                    </div>
+                    <h2 class="page-title">
+                        @Model.MerchantName
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-2 mb-5">
+                @{ await Html.RenderPartialAsync("../_SideNavigation", Model.SideNavigation); }
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-10">
+                <div class="row row-deck">
+                    <div class="col-12">
+                        @using (Html.BeginForm("Create", "Voucher", new { area = "Agent", tenantId = string.Empty }, FormMethod.Post, 
+                        false, 
+                        new {
+                            data_search_agency_category_url = "/Agent/AgencyCategory/PagedSearchGridJson",
+                            data_search_store_url = "/Agent/Store/PagedSearchGridJson"
+                        }))
+                        {
+                            @Html.HiddenFor(model => model.TenantId)
+                            <div class="card">
+                                <div class="card-body">
+                                    @Html.SwitcherFor(model => model.IsAvailable)
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Voucher Detail</h3>
+                                </div>
+                                <div class="card-body">
+                                    @Html.DropDownFor(model => model.CategoryId, Model.Categories, "mb-2")
+                                     <div class="form-group mb-2">
+                                        <label class="form-label" for="MultipleAgencyCategory" >Agency Kategori *</label>
+                                        <select class="form-control" id="MultipleAgencyCategory" name="AgencyCategoryIds[]" required="" multiple="multiple" aria-required="true">
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <label class="form-label" for="MultipleStore" >Store *</label>
+                                        <select class="form-control" id="MultipleStore" name="StoreIds[]" required="" multiple="multiple" aria-required="true">
+
+                                        </select>
+                                    </div>
+                                    @Html.DropDownFor(model => model.RedeemMethod, Model.RedeemMethods, "mb-2")
+                                    @Html.TextEditorFor(model => model.Name, "mb-2")
+                                    @Html.MultilineTextEditorFor(model => model.Description, "mb-2", maxLength: PresentationConstant.TextInputAttribute.LargeTextMaxLength)
+                                    @Html.MultilineTextEditorFor(model => model.TermAndCondition, "mb-2", maxLength: PresentationConstant.TextInputAttribute.LargeTextMaxLength)
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Valid Date</h3>
+                                </div>
+                                <div class="card-body">
+                                    @Html.TextEditorDatePickerFor(model => model.ValidPeriodStart, "mb-2")
+                                    @Html.TextEditorDatePickerFor(model => model.ValidPeriodEnd, "mb-2")
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Pricing</h3>
+                                </div>
+                                <div class="card-body">
+                                    @Html.NumberEditorFor(model => model.Price, "mb-2", maxLength: PresentationConstant.TextInputAttribute.MaxPriceDigitLength)
+                                    @Html.TextEditorFor(model => model.Discount, "mb-2")
+                                    @Html.NumberEditorFor(model => model.Commision)
+                                    @Html.TextEditorFor(model => model.Unit, "mb-2")
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-footer">
+                                    @Html.ButtonWithLabel(
+                                        string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_Save),
+                                        buttonType: PresentationConstant.ButtonType.Submit,
+                                        id: "btn-save",
+                                        cssClass: "btn-primary")
+                                    @Html.LinkButtonWithLabel(
+                                        string.Format("<i class='fa fa-remove mr-1'></i> {0}", GeneralResource.General_Cancel),
+                                        id: "link-cancel",
+                                        cssClass: "btn-link",
+                                        href: $"/Agent/Voucher/Index/{Model.TenantId}")
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new AgentVoucherCreate.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

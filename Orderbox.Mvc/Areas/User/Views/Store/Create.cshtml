@@ -1,0 +1,65 @@
+﻿@using Framework.Core.Resources
+@using Framework.Application.Presentation
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@using Microsoft.Extensions.Configuration
+@{
+    ViewData["Title"] = "Store Management";
+    Layout = $"{this.User.Identity.GetRole()}Layout/_Layout";
+}
+@inject IConfiguration Configuration
+@model Orderbox.Mvc.Areas.User.Models.Store.CreateModel
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        Create
+                    </div>
+                    <h2 class="page-title">
+                        Store
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row row-deck">
+            <div class="col-12">
+                <div class="card">
+                    @using (Html.BeginForm("Create", "Store", FormMethod.Post))
+                    {
+                    <div class="card-body">
+                        @Html.DropDownFor(model => model.CityId, Model.Cities, "mb-2")
+                        @Html.TextEditorFor(model => model.Name, "mb-2")
+                        @Html.TextEditorFor(model => model.Address, "mb-2")
+                        @Html.TextEditorFor(model => model.MapUrl, "mb-2")
+                    </div>
+                    <div class="card-footer">
+                        @Html.ButtonWithLabel(
+                          string.Format("<i class='fa fa-save mr-1'></i> {0}", GeneralResource.General_Save),
+                          buttonType: PresentationConstant.ButtonType.Submit,
+                          id: "btn-save",
+                          cssClass: "btn-primary")
+                        @Html.LinkButtonWithLabel(
+                          string.Format("<i class='fa fa-remove mr-1'></i> {0}", GeneralResource.General_Cancel),
+                          id: "link-cancel",
+                          cssClass: "btn-link",
+                          href: $"/User/Store")
+                     </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new StoreCreate.default($('[page]'));
+            page.register();
+        });
+    </script>
+}

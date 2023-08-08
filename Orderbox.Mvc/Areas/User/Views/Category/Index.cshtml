@@ -1,0 +1,61 @@
+﻿@using Orderbox.Core
+@using Framework.Core.Resources
+@using Framework.Application.Presentation.HtmlHelperExtensions
+@using Orderbox.Mvc.Infrastructure.ServerUtility.Identity
+@using Orderbox.Core.Resources.Common
+@{
+    ViewData["Title"] = "Category Management";
+    Layout = $"{this.User.Identity.GetRole()}Layout/_Layout";
+}
+
+<div page class="content-page">
+    <main class="container my-4 flex-fill">
+        <div class="page-title-box">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        List
+                    </div>
+                    <h2 class="page-title">
+                        Kategori
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row row-deck">
+            <div class="col-12">
+                <div class="card">
+                    <table grid
+                           class="table table-striped table-hover bootgrid-table"
+                           data-url="/User/Category/PagedSearchGridJson"
+                           data-edit-url="/User/Category/Edit">
+                        <thead>
+                            <tr>
+                                <th data-column-id="id" data-formatter="Edit" data-header-css-class="w-7"></th>
+                                <th data-column-id="name">@CategoryResource.Name</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="card-footer">
+                        @Html.LinkButtonWithLabel(
+                             string.Format("<i class='fa fa-plus'></i> {0}", GeneralResource.General_Add),
+                             id: "link-add",
+                             cssClass: "btn-primary",
+                             href: "/User/Category/Create"
+                         )
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section scripts {
+    <script defer type="text/javascript">
+        window.addEventListener('DOMContentLoaded', function () {
+            var page = new CategoryIndex.default($('[page]'));
+            page.register();
+        });
+    </script>
+}
